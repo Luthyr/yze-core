@@ -53,7 +53,8 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     attrName,
     diceCount,
     dice: rollResult.dice,
-    successes: rollResult.successes
+    successes: rollResult.successes,
+    pushed: false
   };
 
   const html = await foundry.applications.handlebars.renderTemplate(

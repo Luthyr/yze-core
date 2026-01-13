@@ -78,7 +78,8 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     skillDice,
     modDice,
     successes,
-    hasMod: mod !== 0
+    hasMod: mod !== 0,
+    pushed: false
   };
 
   const html = await foundry.applications.handlebars.renderTemplate(
