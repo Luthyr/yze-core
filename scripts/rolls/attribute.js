@@ -63,26 +63,26 @@ export async function rollAttribute(actor, attrId, opts = {}) {
 
   // Create the chat message
   const messageData = {
-    user: game.user.id,
-    speaker: ChatMessage.getSpeaker({ actor }),
-    content: html,
-    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-    roll: rollResult.roll,
-    flags: {
-      yzecore: {
-        rollState: {
-          settingId: game.yzecore?.activeSettingId ?? null,
-          actorUuid: actor.uuid,
-          rollType: "attribute",
-          title,
-          pool: { attrId, diceCount, mod },
-          results: { dice: [...rollResult.dice], successes: rollResult.successes },
-          pushed: false,
-          createdAt: Date.now()
-        }
+  user: game.user.id,
+  speaker: ChatMessage.getSpeaker({ actor }),
+  content: html,
+  rolls: [rollResult.roll],
+  flags: {
+    yzecore: {
+      rollState: {
+        settingId: game.yzecore?.activeSettingId ?? null,
+        actorUuid: actor.uuid,
+        rollType: "attribute",
+        title,
+        pool: { attrId, diceCount, mod },
+        results: { dice: [...rollResult.dice], successes: rollResult.successes },
+        pushed: false,
+        createdAt: Date.now()
       }
     }
-  };
+  }
+};
 
-  return ChatMessage.create(messageData);
+return ChatMessage.create(messageData);
+
 }
