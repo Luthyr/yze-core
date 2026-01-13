@@ -1,0 +1,31 @@
+<div class="yze-roll-card">
+  <h3>{{title}}</h3>
+  <div>{{actorName}}</div>
+  <div>{{attrName}}: {{attrValue}}</div>
+  <div>{{skillName}}: {{skillValue}}</div>
+  {{#if hasMod}}
+    <div>Mod: {{mod}}</div>
+  {{/if}}
+  <div>Total Dice: {{totalDice}}</div>
+  <div>Attribute Dice:</div>
+  <ul>
+    {{#each attributeDice}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  <div>Skill Dice:</div>
+  <ul>
+    {{#each skillDice}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  {{#if hasMod}}
+    <div>Mod Dice:</div>
+    <ul>
+      {{#each modDice}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  {{/if}}
+  <div>Successes: {{successes}}</div>
+</div>

@@ -1,4 +1,5 @@
 import { rollAttribute } from "./rolls/attribute.js";
+import { rollSkill } from "./rolls/skill.js";
 
 // scripts/api.js
 export function initYZECoreAPI() {
@@ -9,6 +10,7 @@ export function initYZECoreAPI() {
   game.yzecore.version = "0.1.0";
   game.yzecore.apiVersion = 1;
   game.yzecore.rollAttribute = rollAttribute;
+  game.yzecore.rollSkill = rollSkill;
 
   // TODO: add registerSetting/activateSetting, etc.
 }
