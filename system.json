@@ -9,8 +9,8 @@
   },
   "authors": [
     {
-      "name": "Your Name",
-      "url": "https://github.com/yourname"
+      "name": "Randy M",
+      "url": "https://github.com/Luthyr"
     }
   ],
   "esmodules": [
@@ -25,7 +25,7 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "resource",
   "secondaryTokenAttribute": null,
-  "url": "https://github.com/yourname/yze-core",
-  "manifest": "https://raw.githubusercontent.com/yourname/yze-core/main/system.json",
-  "download": "https://github.com/yourname/yze-core/archive/refs/heads/main.zip"
+  "url": "https://github.com/Luthyr/yze-core",
+  "manifest": "https://raw.githubusercontent.com/Luthyr/yze-core/main/system.json",
+  "download": "https://github.com/Luthyr/yze-core/archive/refs/heads/main.zip"
 }
