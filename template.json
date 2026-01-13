@@ -1,0 +1,21 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "character": {
+      "attributes": {},
+      "skills": {},
+      "conditions": {},
+      "resource": { "value": 0, "max": 0 }
+    }
+  },
+  "Item": {
+    "types": ["gear", "talent"],
+    "gear": {
+      "bonusDice": 0,
+      "equipped": false
+    },
+    "talent": {
+      "rank": 1
+    }
+  }
+}

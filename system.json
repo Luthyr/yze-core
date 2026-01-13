@@ -17,6 +17,7 @@
   "esmodules": [
     "scripts/init.js"
   ],
+  "template": "template.json",
   "styles": [
     "styles/yze-core.css"
   ],
