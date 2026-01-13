@@ -30,7 +30,8 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     successes: pool.successes
   };
 
-  const content = await renderTemplate("templates/chat/roll-card.hbs", chatData);
+  const tpl = `systems/${game.system.id}/templates/chat/roll-card.hbs`;
+  const html = await foundry.applications.handlebars.renderTemplate(tpl, data);
 
   const rollState = {
     settingId: game.yzecore?.activeSettingId ?? null,
@@ -45,7 +46,7 @@ export async function rollAttribute(actor, attrId, opts = {}) {
 
   const message = await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
-    content,
+    content: html,
     flags: {
       yzecore: { rollState }
     }
