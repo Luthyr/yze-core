@@ -3,10 +3,10 @@
   "name": "yze-core",
   "title": "Year Zero Engine - Core",
   "description": "Core SRD-style implementation of the Year Zero Engine for Foundry VTT v13. Designed to be extended by setting modules.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": {
-    "minimum": "13",
-    "verified": "13"
+    "minimum": "13.0",
+    "verified": "13.0"
   },
   "authors": [
     {
