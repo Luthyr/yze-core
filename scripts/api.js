@@ -13,10 +13,29 @@ export function initYZECoreAPI() {
   // Fill in your API surface (example)
   game.yzecore.version = "0.1.0";
   game.yzecore.apiVersion = 1;
+  game.yzecore.settings = game.yzecore.settings ?? {};
   game.yzecore.rollAttribute = rollAttribute;
   game.yzecore.rollSkill = rollSkill;
   game.yzecore.pushRoll = pushRoll;
   game.yzecore.onPushedRoll = fn => Hooks.on("yzeCorePushedRoll", fn);
+  game.yzecore.registerSetting = config => {
+    if (!config?.id) {
+      ui.notifications.error("YZE Core | registerSetting: config.id is required.");
+      throw new Error("registerSetting: config.id is required");
+    }
+    game.yzecore.settings[config.id] = config;
+    return config;
+  };
+  game.yzecore.activateSetting = id => {
+    const setting = game.yzecore.settings?.[id];
+    if (!setting) {
+      ui.notifications.warn(`YZE Core | Setting not found: ${id}`);
+      return null;
+    }
+    game.yzecore.activeSettingId = id;
+    game.yzecore.config = setting;
+    return setting;
+  };
   game.yzecore.pushLastRoll = async () => {
     const msg = game.messages.contents
       .slice()

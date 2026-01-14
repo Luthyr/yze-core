@@ -1,0 +1,21 @@
+{
+  "id": "yze-example-setting",
+  "title": "YZE Example Setting",
+  "description": "Minimal example setting module for yze-core.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13.0",
+    "verified": "13.0"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "yze-core",
+        "type": "required"
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/example-setting.js"
+  ]
+}
