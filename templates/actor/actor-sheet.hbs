@@ -16,28 +16,25 @@
       <h3>Attributes</h3>
 
       <div class="yze-grid yze-grid-attrs">
-        {{#each yze.activeSetting.attributes as |attr|}}
-          {{!-- Fetch current value safely --}}
-          {{#with (lookup ../system.attributes attr.id) as |a|}}
-            <div class="yze-row yze-attr" data-attr="{{attr.id}}">
-              <button type="button"
-                      class="yze-roll"
-                      data-action="rollAttr"
-                      data-attr-id="{{attr.id}}">
-                Roll
-              </button>
+        {{#each attributesRendered as |attr|}}
+          <div class="yze-row yze-attr" data-attr="{{attr.id}}">
+            <button type="button"
+                    class="yze-roll"
+                    data-action="rollAttr"
+                    data-attr-id="{{attr.id}}">
+              Roll
+            </button>
 
-              <label class="yze-label">{{attr.name}}</label>
+            <label class="yze-label">{{attr.name}}</label>
 
-              <input type="number"
-                     class="yze-input"
-                     name="system.attributes.{{attr.id}}.value"
-                     value="{{a.value}}"
-                     min="0"
-                     step="1"
-                     {{#unless @root.editable}}disabled{{/unless}} />
-            </div>
-          {{/with}}
+            <input type="number"
+                   class="yze-input"
+                   name="system.attributes.{{attr.id}}.value"
+                   value="{{attr.value}}"
+                   min="0"
+                   step="1"
+                   {{#unless @root.editable}}disabled{{/unless}} />
+          </div>
         {{/each}}
       </div>
     </section>
@@ -47,31 +44,29 @@
       <h3>Skills</h3>
 
       <div class="yze-grid yze-grid-skills">
-        {{#each yze.activeSetting.skills as |skill|}}
-          {{#with (lookup ../system.skills skill.id) as |s|}}
-            <div class="yze-row yze-skill" data-skill="{{skill.id}}">
-              <button type="button"
-                      class="yze-roll"
-                      data-action="rollSkill"
-                      data-skill-id="{{skill.id}}"
-                      data-attr-id="{{skill.attribute}}">
-                Roll
-              </button>
+        {{#each skillsRendered as |skill|}}
+          <div class="yze-row yze-skill" data-skill="{{skill.id}}">
+            <button type="button"
+                    class="yze-roll"
+                    data-action="rollSkill"
+                    data-skill-id="{{skill.id}}"
+                    data-attr-id="{{skill.attribute}}">
+              Roll
+            </button>
 
-              <label class="yze-label">
-                {{skill.name}}
-                <span class="yze-subtle">({{skill.attribute}})</span>
-              </label>
+            <label class="yze-label">
+              {{skill.name}}
+              <span class="yze-subtle">({{skill.attribute}})</span>
+            </label>
 
-              <input type="number"
-                     class="yze-input"
-                     name="system.skills.{{skill.id}}.value"
-                     value="{{s.value}}"
-                     min="0"
-                     step="1"
-                     {{#unless @root.editable}}disabled{{/unless}} />
-            </div>
-          {{/with}}
+            <input type="number"
+                   class="yze-input"
+                   name="system.skills.{{skill.id}}.value"
+                   value="{{skill.value}}"
+                   min="0"
+                   step="1"
+                   {{#unless @root.editable}}disabled{{/unless}} />
+          </div>
         {{/each}}
       </div>
     </section>

@@ -2,7 +2,8 @@ const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
-  static DEFAULT_OPTIONS = {
+  static get DEFAULT_OPTIONS() {
+    return foundry.utils.mergeObject(super.DEFAULT_OPTIONS, {
     classes: ["yze-core", "sheet", "actor"],
     position: { width: 720, height: 680 },
     window: { resizable: true, title: "YZE Core Actor" },
@@ -10,7 +11,8 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     // ✅ explicit permissions
     viewPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED,
     editPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
-  };
+    });
+  }
 
   // IMPORTANT: In AppV2 templates, do NOT wrap your part in a <form>.
   // DocumentSheetV2 provides the form shell; your template is the inside.
