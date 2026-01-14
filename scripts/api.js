@@ -4,13 +4,16 @@
 import { rollAttribute } from "./rolls/attribute.js";
 import { rollSkill } from "./rolls/skill.js";
 import { pushRoll } from "./rolls/push.js";
+import { registerExampleSetting } from "./dev/example-setting.js";
 
 // scripts/api.js
 export function initYZECoreAPI() {
+
   // Create the namespace once
   if (!game.yzecore) game.yzecore = {};
 
   // Fill in your API surface (example)
+  game.yzecore = game.yzecore ?? {};
   game.yzecore.version = "0.1.0";
   game.yzecore.apiVersion = 1;
   game.yzecore.settings = game.yzecore.settings ?? {};
@@ -46,4 +49,7 @@ export function initYZECoreAPI() {
   };
 
   // TODO: add registerSetting/activateSetting, etc.
+
+  // DEV: enable example setting automatically
+  registerExampleSetting();
 }
