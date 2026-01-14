@@ -5,6 +5,7 @@ import { rollAttribute } from "./rolls/attribute.js";
 import { rollSkill } from "./rolls/skill.js";
 import { pushRoll } from "./rolls/push.js";
 import { registerExampleSetting } from "./dev/example-setting.js";
+import { validateSetting } from "./sdk/validate-setting.js";
 
 // scripts/api.js
 export function initYZECoreAPI() {
@@ -18,14 +19,14 @@ export function initYZECoreAPI() {
   game.yzecore.rollSkill = rollSkill;
   game.yzecore.pushRoll = pushRoll;
   game.yzecore.onPushedRoll = fn => Hooks.on("yzeCorePushedRoll", fn);
+
   game.yzecore.registerSetting = config => {
-    if (!config?.id) {
-      ui.notifications.error("YZE Core | registerSetting: config.id is required.");
-      throw new Error("registerSetting: config.id is required");
-    }
+    validateSetting(config); // ✅ SDK enforcement
+
     game.yzecore.settings[config.id] = config;
     return config;
   };
+
   game.yzecore.activateSetting = id => {
     const setting = game.yzecore.settings?.[id];
     if (!setting) {
