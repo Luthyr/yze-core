@@ -84,7 +84,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     context.actor = this.document;
     context.system = this.document.system;
     context.editable = this.isEditable || this.document.isOwner;
-    context.lastRoll = this.document.getFlag("yzecore", "lastRoll") ?? null;
+    context.lastRoll = this.document.getFlag("yze-core", "lastRoll") ?? null;
 
     // form footer buttons
     context.buttons = [

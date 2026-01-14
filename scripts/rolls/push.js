@@ -18,7 +18,7 @@ export async function pushRoll(message, opts = {}) {
     throw new Error("pushRoll: message is required");
   }
 
-  const rollState = targetMessage.flags?.yzecore?.rollState;
+  const rollState = targetMessage.flags?.["yze-core"]?.rollState;
   if (!rollState) {
     ui.notifications.error("YZE Core | pushRoll: rollState not found.");
     throw new Error("pushRoll: rollState not found");
@@ -179,7 +179,7 @@ export async function pushRoll(message, opts = {}) {
   const updatedMessage = await targetMessage.update({
     content: html,
     rolls: [newRoll],
-    flags: { yzecore: { rollState: updatedRollState } }
+    flags: { "yze-core": { rollState: updatedRollState } }
   });
 
   let actor = null;
@@ -196,7 +196,7 @@ export async function pushRoll(message, opts = {}) {
 
   if (actor) {
     const summary = buildRollSummary(updatedRollState, targetMessage.id);
-    if (summary) await actor.setFlag("yzecore", "lastRoll", summary);
+    if (summary) await actor.setFlag("yze-core", "lastRoll", summary);
   }
 
   Hooks.callAll("yzeCorePushedRoll", {

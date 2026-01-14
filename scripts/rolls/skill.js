@@ -99,7 +99,7 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     content: "",
     rolls: [roll],
     flags: {
-      yzecore: {
+      "yze-core": {
         rollState
       }
     }
@@ -135,6 +135,6 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
 
   await message.update({ content: html });
   const summary = buildRollSummary(rollState, message.id);
-  if (summary) await actor.setFlag("yzecore", "lastRoll", summary);
+  if (summary) await actor.setFlag("yze-core", "lastRoll", summary);
   return message;
 }

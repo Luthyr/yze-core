@@ -43,7 +43,7 @@ export function initYZECoreAPI() {
     const msg = game.messages.contents
       .slice()
       .reverse()
-      .find(m => m.flags?.yzecore?.rollState);
+      .find(m => m.flags?.["yze-core"]?.rollState);
     if (!msg) return ui.notifications.warn("No YZE roll message found.");
     return game.yzecore.pushRoll(msg);
   };
@@ -78,6 +78,15 @@ export function initYZECoreAPI() {
       }
 
     }
+  });
+
+  game.settings.register("yze-core", "migratedLegacyFlags", {
+    name: "Migrated Legacy Flags",
+    hint: "Internal flag migration marker for yze-core.",
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false
   });
 
   // "Ready work" as a function so we can run it now OR on ready

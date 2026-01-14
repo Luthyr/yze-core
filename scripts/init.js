@@ -7,8 +7,29 @@ Hooks.once("init", () => {
   registerSheets();
 });
 
-Hooks.once("ready", () => {
+Hooks.once("ready", async () => {
   console.log("YZE Core | ready", { foundry: game.version, system: game.system.id });
+
+  // Migrate legacy yzecore flags to yze-core scope (one-time best-effort)
+  const migrated = game.settings.get("yze-core", "migratedLegacyFlags");
+  if (!migrated) {
+  for (const actor of game.actors.contents) {
+    const legacy = actor.flags?.yzecore?.lastRoll;
+    const current = actor.flags?.["yze-core"]?.lastRoll;
+    if (legacy && !current) {
+      await actor.update({ "flags.yze-core.lastRoll": legacy });
+    }
+  }
+
+  for (const msg of game.messages.contents) {
+    const legacy = msg.flags?.yzecore?.rollState;
+    const current = msg.flags?.["yze-core"]?.rollState;
+    if (legacy && !current) {
+      await msg.update({ "flags.yze-core.rollState": legacy });
+    }
+  }
+    await game.settings.set("yze-core", "migratedLegacyFlags", true);
+  }
 });
 
 Hooks.on("yzeCoreSettingActivated", () => {
@@ -43,7 +64,7 @@ Hooks.on("renderChatMessage", (message, html) => {
     if (!msg) return ui.notifications.warn("YZE Core | Roll message not found.");
 
     // Must have rollState
-    const rollState = msg.flags?.yzecore?.rollState;
+    const rollState = msg.flags?.["yze-core"]?.rollState;
     if (!rollState) return ui.notifications.warn("YZE Core | No rollState on message.");
 
     // Optional: permission guard (only the roller or GM)
