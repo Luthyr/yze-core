@@ -35,7 +35,7 @@
                      value="{{a.value}}"
                      min="0"
                      step="1"
-                     {{#unless ../../editable}}disabled{{/unless}} />
+                     {{#unless @root.editable}}disabled{{/unless}} />
             </div>
           {{/with}}
         {{/each}}
@@ -69,7 +69,7 @@
                      value="{{s.value}}"
                      min="0"
                      step="1"
-                     {{#unless ../../editable}}disabled{{/unless}} />
+                     {{#unless @root.editable}}disabled{{/unless}} />
             </div>
           {{/with}}
         {{/each}}
@@ -92,7 +92,7 @@
                   value="{{res.value}}"
                   min="0"
                   step="1"
-                  {{#unless ../editable}}disabled{{/unless}} />
+                  {{#unless @root.editable}}disabled{{/unless}} />
 
             {{#if res.maxPath}}
               <span class="yze-subtle">/</span>
@@ -102,7 +102,7 @@
                     value="{{res.max}}"
                     min="0"
                     step="1"
-                    {{#unless ../editable}}disabled{{/unless}} />
+                    {{#unless @root.editable}}disabled{{/unless}} />
             {{/if}}
           </div>
         {{/each}}

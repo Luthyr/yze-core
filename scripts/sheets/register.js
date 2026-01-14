@@ -12,7 +12,7 @@ export function registerSheets() {
 
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("yze-core", YZECoreItemSheetV2, {
-    types: ["gear"],
+    types: ["gear", "talent"],
     makeDefault: true,
     label: "YZE Core Item Sheet"
   });
