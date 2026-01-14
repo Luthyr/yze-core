@@ -2,7 +2,12 @@
 
   <header class="yze-header">
     <div class="yze-title">
-      <h2 class="actor-name">{{actor.name}}</h2>
+      <h2 class="actor-name">
+        <input type="text"
+               name="name"
+               value="{{actor.name}}"
+               {{#unless @root.editable}}disabled{{/unless}} />
+      </h2>
       {{#if yze.hasActiveSetting}}
         <p class="hint">Active setting: <strong>{{yze.activeSetting.name}}</strong> ({{yze.activeSetting.id}})</p>
       {{/if}}

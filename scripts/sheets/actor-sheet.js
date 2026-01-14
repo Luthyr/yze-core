@@ -35,6 +35,33 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     }
   };
 
+  activateListeners(html) {
+    super.activateListeners(html);
+    const root = html instanceof HTMLElement ? html : html?.[0];
+    if (!root) return;
+
+    root.querySelectorAll("[data-action='rollAttr']").forEach(el => {
+      el.addEventListener("click", event => this._onRollAttr(event));
+    });
+
+    root.querySelectorAll("[data-action='rollSkill']").forEach(el => {
+      el.addEventListener("click", event => this._onRollSkill(event));
+    });
+  }
+
+  _onRollAttr(event) {
+    const attrId = event.currentTarget?.dataset?.attrId;
+    if (!attrId) return;
+    return game.yzecore.rollAttribute(this.document, attrId);
+  }
+
+  _onRollSkill(event) {
+    const skillId = event.currentTarget?.dataset?.skillId;
+    const attrId = event.currentTarget?.dataset?.attrId;
+    if (!skillId || !attrId) return;
+    return game.yzecore.rollSkill(this.document, attrId, skillId);
+  }
+
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
