@@ -47,20 +47,24 @@ export function initYZECoreAPI() {
     return game.yzecore.pushRoll(msg);
   };
 
-  // TODO: add registerSetting/activateSetting, etc.
+  // Always register in init (safe)
+  game.settings.register("yze-core", "enableDevExampleSetting", {
+    name: "Enable Dev Example Setting",
+    hint: "Auto-registers the dev example setting on ready (for local testing only).",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
 
-  if (!game.settings.settings.get("yze-core.enableDevExampleSetting")) {
-    game.settings.register("yze-core", "enableDevExampleSetting", {
-      name: "Enable Dev Example Setting",
-      hint: "Auto-registers the dev example setting on ready (for local testing only).",
-      scope: "world",
-      config: true,
-      type: Boolean,
-      default: false
-    });
-  }
+  // Only READ world settings + activate in ready (correct)
+  Hooks.once("ready", () => {
+    if (game.settings.get("yze-core", "enableDevExampleSetting")) {
+      registerExampleSetting();
+      // registerExampleSetting should call:
+      // game.yzecore.registerSetting(config)
+      // game.yzecore.activateSetting(config.id)
+    }
+  });
 
-  if (game.settings.get("yze-core", "enableDevExampleSetting")) {
-    registerExampleSetting();
-  }
 }
