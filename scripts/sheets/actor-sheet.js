@@ -21,22 +21,9 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     footer: { template: "templates/generic/form-footer.hbs" }
   };
 
-  static actions = {
-    rollAttr: async function (event) {
-      const attrId = event.currentTarget?.dataset?.attrId;
-      if (!attrId) return;
-      return game.yzecore.rollAttribute(this.document, attrId);
-    },
-    rollSkill: async function (event) {
-      const skillId = event.currentTarget?.dataset?.skillId;
-      const attrId = event.currentTarget?.dataset?.attrId;
-      if (!skillId || !attrId) return;
-      return game.yzecore.rollSkill(this.document, attrId, skillId);
-    }
-  };
-
-  activateListeners(html) {
-    super.activateListeners(html);
+  _attachPartListeners(partId, html) {
+    super._attachPartListeners(partId, html);
+    if (partId !== "main") return;
     const root = html instanceof HTMLElement ? html : html?.[0];
     if (!root) return;
 
