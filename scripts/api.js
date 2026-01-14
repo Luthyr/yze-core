@@ -64,6 +64,9 @@ export function initYZECoreAPI() {
 
     if (enabled) {
       registerExampleSetting();
+      if (game.yzecore.activeSettingId !== "example") {
+        game.yzecore.activateSetting("example");
+      }
       console.log("YZE Core | Active setting after registerExampleSetting:", game.yzecore.activeSettingId, game.yzecore.getActiveSetting?.());
     }
   };

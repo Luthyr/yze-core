@@ -23,7 +23,9 @@ Hooks.once("ready", () => {
 
 Hooks.on("yzeCoreSettingActivated", () => {
   // Re-render any open actor sheets so they pick up the new context
-  for (const actor of game.actors.contents) {
-    if (actor.sheet?.rendered) actor.sheet.render({ force: false });
+  for (const app of Object.values(ui.windows)) {
+    if (app?.document instanceof Actor && app.rendered) {
+      app.render({ force: true });
+    }
   }
 });
