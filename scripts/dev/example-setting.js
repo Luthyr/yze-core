@@ -1,4 +1,6 @@
 // scripts/dev/example-setting.js
+import { ensureActorDefaults } from "../settings/init-actors.js";
+
 export function registerExampleSetting() {
   if (!game?.yzecore) {
     console.warn("Example Setting | yze-core API not found.");
@@ -23,39 +25,40 @@ export function registerExampleSetting() {
     }
   };
 
-  // Register + activate
   game.yzecore.registerSetting(settingConfig);
-  game.yzecore.activateSetting("example");
 
-  // Ensure stress on all existing actors
-  for (const a of game.actors.contents) ensureStress(a);
+  let activeConfig = null;
 
-  // Ensure stress on newly created actors
-  Hooks.on("createActor", (a) => ensureStress(a));
-
-  // Consequence on push: +1 stress
-  Hooks.on("yzeCorePushedRoll", async (ctx) => {
-    const a = ctx.actor;
-    if (!a) return;
-
-    const cur = Number(foundry.utils.getProperty(a, "system.stress.value") ?? 0) || 0;
-    const max = Number(foundry.utils.getProperty(a, "system.stress.max") ?? 10) || 10;
-    const next = Math.min(max, cur + 1);
-
-    await a.update({ "system.stress.value": next, "system.stress.max": max });
-    ui.notifications.info(`Example Setting: ${a.name} gains 1 Stress (${next}/${max}).`);
+  Hooks.on("yzeCoreSettingActivated", async ({ id, config }) => {
+    if (id !== "example") {
+      activeConfig = null;
+      return;
+    }
+    activeConfig = config;
+    for (const actor of game.actors.contents) {
+      await ensureActorDefaults(actor, config);
+    }
   });
 
-  console.log("Example Setting | registered + active");
-}
+  Hooks.on("createActor", async actor => {
+    if (!activeConfig) return;
+    await ensureActorDefaults(actor, activeConfig);
+  });
 
-async function ensureStress(actor) {
-  const hasVal = foundry.utils.hasProperty(actor, "system.stress.value");
-  const hasMax = foundry.utils.hasProperty(actor, "system.stress.max");
-  if (hasVal && hasMax) return;
+  Hooks.on("yzeCorePushedRoll", async ctx => {
+    if (!ctx?.actor) return;
+    if (game.yzecore.getActiveSetting()?.id !== "example") return;
 
-  const update = {};
-  if (!hasVal) update["system.stress.value"] = 0;
-  if (!hasMax) update["system.stress.max"] = 10;
-  await actor.update(update);
+    const stress = activeConfig?.resources?.stress;
+    const valuePath = stress?.path ?? "system.stress.value";
+    const maxPath = stress?.maxPath ?? "system.stress.max";
+    const cur = Number(foundry.utils.getProperty(ctx.actor, valuePath) ?? 0) || 0;
+    const max = Number(foundry.utils.getProperty(ctx.actor, maxPath) ?? 10) || 10;
+    const next = Math.min(max, cur + 1);
+
+    await ctx.actor.update({ [valuePath]: next, [maxPath]: max });
+    ui.notifications.info(`Example Setting: ${ctx.actor.name} gains 1 Stress (${next}/${max}).`);
+  });
+
+  console.log("Example Setting | registered");
 }

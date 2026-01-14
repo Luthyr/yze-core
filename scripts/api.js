@@ -34,8 +34,10 @@ export function initYZECoreAPI() {
     }
     game.yzecore.activeSettingId = id;
     game.yzecore.config = setting;
+    Hooks.callAll("yzeCoreSettingActivated", { id, config: setting });
     return setting;
   };
+  game.yzecore.getActiveSetting = () => game.yzecore.config ?? null;
   game.yzecore.pushLastRoll = async () => {
     const msg = game.messages.contents
       .slice()
@@ -47,6 +49,18 @@ export function initYZECoreAPI() {
 
   // TODO: add registerSetting/activateSetting, etc.
 
-  // DEV: enable example setting automatically
-  registerExampleSetting();
+  if (!game.settings.settings.get("yze-core.enableDevExampleSetting")) {
+    game.settings.register("yze-core", "enableDevExampleSetting", {
+      name: "Enable Dev Example Setting",
+      hint: "Auto-registers the dev example setting on ready (for local testing only).",
+      scope: "world",
+      config: true,
+      type: Boolean,
+      default: false
+    });
+  }
+
+  if (game.settings.get("yze-core", "enableDevExampleSetting")) {
+    registerExampleSetting();
+  }
 }
