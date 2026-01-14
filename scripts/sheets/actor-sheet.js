@@ -6,6 +6,10 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     classes: ["yze-core", "sheet", "actor"],
     position: { width: 720, height: 680 },
     window: { resizable: true, title: "YZE Core Actor" }
+
+    // ✅ explicit permissions
+    viewPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED,
+    editPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
   };
 
   // IMPORTANT: In AppV2 templates, do NOT wrap your part in a <form>.
