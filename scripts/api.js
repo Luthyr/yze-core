@@ -21,7 +21,7 @@ export function initYZECoreAPI() {
   game.yzecore.onPushedRoll = fn => Hooks.on("yzeCorePushedRoll", fn);
 
   game.yzecore.registerSetting = config => {
-    validateSetting(config); // ✅ SDK enforcement
+    validateSetting(config); // ? SDK enforcement
 
     game.yzecore.settings[config.id] = config;
     return config;
@@ -48,38 +48,6 @@ export function initYZECoreAPI() {
     return game.yzecore.pushRoll(msg);
   };
 
-    // Always register in init (safe)
-  game.settings.register("yze-core", "enableDevExampleSetting", {
-    name: "Enable Dev Example Setting",
-    hint: "Auto-registers the dev example setting on ready (for local testing only).",
-    scope: "world",
-    config: true,
-    type: Boolean,
-    default: false,
-
-    onChange: enabled => {
-      // Toggle ON: register + activate example
-      if (enabled) {
-        registerExampleSetting(); // should call registerSetting + activateSetting
-        if (game.yzecore?.activeSettingId !== "example") {
-          game.yzecore.activateSetting("example");
-        }
-        ui.notifications.info("YZE Core | Example setting enabled.");
-      }
-
-      // Toggle OFF: deactivate current setting if it’s the example
-      else {
-        if (game.yzecore?.activeSettingId === "example") {
-          game.yzecore.activeSettingId = null;
-          game.yzecore.config = null;
-          Hooks.callAll("yzeCoreSettingDeactivated", { id: "example" });
-          ui.notifications.info("YZE Core | Example setting disabled.");
-        }
-      }
-
-    }
-  });
-
   game.settings.register("yze-core", "migratedLegacyFlags", {
     name: "Migrated Legacy Flags",
     hint: "Internal flag migration marker for yze-core.",
@@ -89,23 +57,6 @@ export function initYZECoreAPI() {
     default: false
   });
 
-  // "Ready work" as a function so we can run it now OR on ready
-  const maybeEnableDevSetting = () => {
-    const enabled = game.settings.get("yze-core", "enableDevExampleSetting");
-    console.log("YZE Core | Dev example setting enabled?", enabled);
-
-    if (enabled) {
-      registerExampleSetting();
-      if (game.yzecore.activeSettingId !== "example") {
-        game.yzecore.activateSetting("example");
-      }
-      console.log("YZE Core | Active setting after registerExampleSetting:", game.yzecore.activeSettingId, game.yzecore.getActiveSetting?.());
-    }
-  };
-
-  // ✅ If initYZECoreAPI runs after ready, run immediately.
-  // ✅ Otherwise, run on ready.
-  if (game.ready) maybeEnableDevSetting();
-  else Hooks.once("ready", maybeEnableDevSetting);
-
+  // Always register the dev example setting for the switcher.
+  registerExampleSetting();
 }

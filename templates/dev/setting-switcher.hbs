@@ -2,9 +2,11 @@
   <header class="yze-header">
     <h2>YZE Core — Setting Switcher</h2>
     <p class="hint">
+      Settings define attributes, skills, and rules for this game. Only one may be active at a time.
+    </p>
+    <p class="hint">
       Active: {{#if active}}{{active.name}} ({{active.id}}){{else}}None{{/if}}
     </p>
-    <p class="hint">Dev example enabled: {{#if devExampleEnabled}}Yes{{else}}No{{/if}}</p>
   </header>
 
   {{#if settings.length}}
