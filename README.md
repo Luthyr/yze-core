@@ -1,6 +1,9 @@
 # yze-core
 Core game module for the YZE game system.
 
+// YZE Core v0.6.0
+// Stable: rolls, push, hooks, explicit setting activation
+
 // YZE Core v0.4.0
 // Stable: example setting hooks with consequence mechanics
 
