@@ -28,7 +28,13 @@ export async function pushRoll(message, opts = {}) {
     return null;
   }
 
+  const prevRollState = foundry.utils.duplicate(rollState);
   const oldDice = rollState.results?.dice;
+  const oldSuccesses = Number.isFinite(rollState.results?.successes)
+    ? rollState.results.successes
+    : Array.isArray(oldDice)
+      ? oldDice.filter(value => value === 6).length
+      : 0;
   if (!Array.isArray(oldDice) || !oldDice.every(n => typeof n === "number")) {
     ui.notifications.error("YZE Core | pushRoll: dice results are missing.");
     throw new Error("pushRoll: dice results are missing");
@@ -163,11 +169,35 @@ export async function pushRoll(message, opts = {}) {
     templateData
   );
 
-  await targetMessage.update({
+  const updatedMessage = await targetMessage.update({
     content: html,
     rolls: [newRoll],
     flags: { yzecore: { rollState: updatedRollState } }
   });
 
-  return targetMessage;
+  let actor = null;
+  if (updatedRollState.actorUuid) {
+    try {
+      actor = await fromUuid(updatedRollState.actorUuid);
+    } catch (error) {
+      actor = null;
+    }
+    if (!actor) {
+      ui.notifications.warn("YZE Core | pushRoll: actor could not be resolved.");
+    }
+  }
+
+  Hooks.callAll("yzeCorePushedRoll", {
+    actor,
+    message: updatedMessage ?? targetMessage,
+    rollState: updatedRollState,
+    roll: newRoll,
+    previous: {
+      rollState: prevRollState,
+      dice: [...oldDice],
+      successes: oldSuccesses
+    }
+  });
+
+  return updatedMessage ?? targetMessage;
 }

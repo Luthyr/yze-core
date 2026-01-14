@@ -1,3 +1,6 @@
+// IMPORTANT: rollState is the single source of truth.
+// Never infer dice from ChatMessage.rolls alone.
+
 import { rollAttribute } from "./rolls/attribute.js";
 import { rollSkill } from "./rolls/skill.js";
 import { pushRoll } from "./rolls/push.js";
@@ -13,6 +16,7 @@ export function initYZECoreAPI() {
   game.yzecore.rollAttribute = rollAttribute;
   game.yzecore.rollSkill = rollSkill;
   game.yzecore.pushRoll = pushRoll;
+  game.yzecore.onPushedRoll = fn => Hooks.on("yzeCorePushedRoll", fn);
   game.yzecore.pushLastRoll = async () => {
     const msg = game.messages.contents
       .slice()
