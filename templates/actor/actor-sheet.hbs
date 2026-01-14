@@ -76,42 +76,39 @@
       </div>
     </section>
 
-    {{!-- RESOURCES --}}
-    {{#if yze.activeSetting.resources}}
-      <section class="yze-block">
-        <h3>Resources</h3>
+   {{!-- RESOURCES --}}
+  {{#if resourcesRendered}}
+    <section class="yze-block">
+      <h3>Resources</h3>
 
-        <div class="yze-grid yze-grid-resources">
-          {{!-- resources is an object, iterate key/value --}}
-          {{#each yze.activeSetting.resources as |res resId|}}
-            <div class="yze-row yze-resource" data-resource="{{resId}}">
-              <label class="yze-label">{{res.name}}</label>
+      <div class="yze-grid yze-grid-resources">
+        {{#each resourcesRendered as |res|}}
+          <div class="yze-row yze-resource" data-resource="{{res.resId}}">
+            <label class="yze-label">{{res.name}}</label>
 
-              {{!-- Value --}}
+            <input type="number"
+                  class="yze-input"
+                  name="{{res.path}}"
+                  value="{{res.value}}"
+                  min="0"
+                  step="1"
+                  {{#unless ../editable}}disabled{{/unless}} />
+
+            {{#if res.maxPath}}
+              <span class="yze-subtle">/</span>
               <input type="number"
-                     class="yze-input"
-                     name="{{res.path}}"
-                     value="{{getProperty ../system (replace res.path "system." "")}}"
-                     min="0"
-                     step="1"
-                     {{#unless ../editable}}disabled{{/unless}} />
-
-              {{!-- Max (optional) --}}
-              {{#if res.maxPath}}
-                <span class="yze-subtle">/</span>
-                <input type="number"
-                       class="yze-input yze-input-max"
-                       name="{{res.maxPath}}"
-                       value="{{getProperty ../system (replace res.maxPath "system." "")}}"
-                       min="0"
-                       step="1"
-                       {{#unless ../editable}}disabled{{/unless}} />
-              {{/if}}
-            </div>
-          {{/each}}
-        </div>
-      </section>
-    {{/if}}
+                    class="yze-input yze-input-max"
+                    name="{{res.maxPath}}"
+                    value="{{res.max}}"
+                    min="0"
+                    step="1"
+                    {{#unless ../editable}}disabled{{/unless}} />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    </section>
+  {{/if}}
 
   {{else}}
 

@@ -35,6 +35,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
 
     // ✅ guarantee config exists or show a nicer error
   const active = game.yzecore.getActiveSetting?.() ?? null;
+  console.log("YZE sheet ctx active:", !!active, active?.id);
   context.yze = { activeSetting: active, hasActiveSetting: !!active };
 
   if (active) {
@@ -49,11 +50,11 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     }));
 
     const resObj = active.resources ?? {};
-    context.resourcesRendered = Object.entries(resObj).map(([id, r]) => ({
-      id,
-      ...r,
-      value: foundry.utils.getProperty(this.document, r.path) ?? 0,
-      max: r.maxPath ? (foundry.utils.getProperty(this.document, r.maxPath) ?? 0) : null
+    context.resourcesRendered = Object.entries(resObj).map(([resId, res]) => ({
+      resId,
+      ...res,
+      value: foundry.utils.getProperty(this.document, res.path) ?? 0,
+      max: res.maxPath ? (foundry.utils.getProperty(this.document, res.maxPath) ?? 0) : null
     }));
   }
 
