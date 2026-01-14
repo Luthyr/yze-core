@@ -65,7 +65,14 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     // expose doc data (ActorSheetV2 already gives you document/system, but explicit is fine)
     context.actor = this.document;
     context.system = this.document.system;
-    context.editable = this.isEditable;
+    context.editable = this.isEditable || this.document.isOwner;
+    console.debug("YZE sheet editability", {
+      user: game.user?.id,
+      role: game.user?.role,
+      actorIsOwner: this.document.isOwner,
+      sheetIsEditable: this.isEditable,
+      contextEditable: context.editable
+    });
 
     // form footer buttons
     context.buttons = [
