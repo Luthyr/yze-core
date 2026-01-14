@@ -9,12 +9,9 @@ import { registerExampleSetting } from "./dev/example-setting.js";
 // scripts/api.js
 export function initYZECoreAPI() {
 
-  // Create the namespace once
-  if (!game.yzecore) game.yzecore = {};
-
-  // Fill in your API surface (example)
+  // API
   game.yzecore = game.yzecore ?? {};
-  game.yzecore.version = "0.1.0";
+  game.yzecore.version = game.system.version;
   game.yzecore.apiVersion = 1;
   game.yzecore.settings = game.yzecore.settings ?? {};
   game.yzecore.rollAttribute = rollAttribute;
