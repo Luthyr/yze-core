@@ -1,0 +1,30 @@
+<section class="yze-setting-switcher">
+  <header class="yze-header">
+    <h2>YZE Core — Setting Switcher</h2>
+    <p class="hint">
+      Active: {{#if active}}{{active.name}} ({{active.id}}){{else}}None{{/if}}
+    </p>
+    <p class="hint">Dev example enabled: {{#if devExampleEnabled}}Yes{{else}}No{{/if}}</p>
+  </header>
+
+  {{#if settings.length}}
+    <div class="yze-list">
+      {{#each settings as |s|}}
+        <div class="yze-row">
+          <div class="yze-label">{{s.name}} ({{s.id}})</div>
+          {{#if s.isActive}}
+            <button type="button" data-action="deactivate" data-id="{{s.id}}">
+              Deactivate
+            </button>
+          {{else}}
+            <button type="button" data-action="activate" data-id="{{s.id}}">
+              Activate
+            </button>
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <p class="hint">No settings registered.</p>
+  {{/if}}
+</section>

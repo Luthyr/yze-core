@@ -1,10 +1,20 @@
 import { initYZECoreAPI } from "./api.js";
 import { registerSheets } from "./sheets/register.js";
+import { YZESettingSwitcherV2 } from "./dev/setting-switcher.js";
 
 Hooks.once("init", () => {
   initYZECoreAPI();
 
   registerSheets();
+
+  game.settings.registerMenu("yze-core", "settingSwitcher", {
+    name: "YZE Core — Setting Switcher",
+    label: "Open Setting Switcher",
+    hint: "Developer tool to activate or deactivate YZE Core settings.",
+    icon: "fa-solid fa-toggle-on",
+    type: YZESettingSwitcherV2,
+    restricted: true
+  });
 });
 
 Hooks.once("ready", async () => {
