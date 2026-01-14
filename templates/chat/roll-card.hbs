@@ -11,4 +11,15 @@
     {{/each}}
   </ul>
   <div>Successes: {{successes}}</div>
+
+  <div class="yze-roll-controls">
+    {{#if rollState.pushable}}
+      <button type="button"
+              class="yze-push-roll"
+              data-action="yze-push"
+              data-message-id="{{messageId}}">
+        Push
+      </button>
+    {{/if}}
+  </div>
 </div>

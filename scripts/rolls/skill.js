@@ -63,6 +63,47 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
   const title = opts.title ?? `${attrName}+${skillName} Roll`;
 
   const templatePath = `systems/${game.system.id}/templates/chat/skill-roll-card.hbs`;
+
+  const rollState = {
+    settingId: game.yzecore?.activeSettingId ?? null,
+    authorId: game.user.id,
+    actorUuid: actor.uuid,
+    rollType: "skill",
+    title,
+    pool: {
+      attrId,
+      skillId,
+      attrValue,
+      skillValue,
+      mod,
+      totalDice
+    },
+    results: {
+      attributeDice: [...attributeDice],
+      skillDice: [...skillDice],
+      modDice: [...modDice],
+      dice: [...dice],
+      successes
+    },
+    pushed: false,
+    pushable: true,
+    createdAt: Date.now()
+  };
+
+  const messageData = {
+    user: game.user.id,
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: "",
+    rolls: [roll],
+    flags: {
+      yzecore: {
+        rollState
+      }
+    }
+  };
+
+  const message = await ChatMessage.create(messageData);
+
   const templateData = {
     title,
     actorName: actor.name,
@@ -79,7 +120,9 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     modDice,
     successes,
     hasMod: mod !== 0,
-    pushed: false
+    pushed: false,
+    messageId: message.id,
+    rollState
   };
 
   const html = await foundry.applications.handlebars.renderTemplate(
@@ -87,39 +130,6 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     templateData
   );
 
-  const messageData = {
-    user: game.user.id,
-    speaker: ChatMessage.getSpeaker({ actor }),
-    content: html,
-    rolls: [roll],
-    flags: {
-      yzecore: {
-        rollState: {
-          settingId: game.yzecore?.activeSettingId ?? null,
-          actorUuid: actor.uuid,
-          rollType: "skill",
-          title,
-          pool: {
-            attrId,
-            skillId,
-            attrValue,
-            skillValue,
-            mod,
-            totalDice
-          },
-          results: {
-            attributeDice: [...attributeDice],
-            skillDice: [...skillDice],
-            modDice: [...modDice],
-            dice: [...dice],
-            successes
-          },
-          pushed: false,
-          createdAt: Date.now()
-        }
-      }
-    }
-  };
-
-  return ChatMessage.create(messageData);
+  await message.update({ content: html });
+  return message;
 }

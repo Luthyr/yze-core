@@ -117,6 +117,7 @@ export async function pushRoll(message, opts = {}) {
     successes
   };
   updatedRollState.pushed = true;
+  updatedRollState.pushable = false;
   updatedRollState.push = pushMeta;
   updatedRollState.updatedAt = Date.now();
 
@@ -130,7 +131,9 @@ export async function pushRoll(message, opts = {}) {
     diceCount: updatedRollState.pool?.diceCount ?? updatedDice.length,
     dice: updatedDice,
     successes,
-    pushed: true
+    pushed: true,
+    messageId: targetMessage.id,
+    rollState: updatedRollState
   };
 
   if (rollState.rollType === "skill") {
@@ -160,7 +163,9 @@ export async function pushRoll(message, opts = {}) {
       modDice,
       successes,
       hasMod: mod !== 0,
-      pushed: true
+      pushed: true,
+      messageId: targetMessage.id,
+      rollState: updatedRollState
     };
   }
 

@@ -46,6 +46,34 @@ export async function rollAttribute(actor, attrId, opts = {}) {
 
   const templatePath = `systems/${game.system.id}/templates/chat/roll-card.hbs`;
 
+  const rollState = {
+    settingId: game.yzecore?.activeSettingId ?? null,
+    authorId: game.user.id,
+    actorUuid: actor.uuid,
+    rollType: "attribute",
+    title,
+    pool: { attrId, diceCount, mod },
+    results: { dice: [...rollResult.dice], successes: rollResult.successes },
+    pushed: false,
+    pushable: true,
+    createdAt: Date.now()
+  };
+
+  // Create the chat message first so we can render with messageId
+  const messageData = {
+    user: game.user.id,
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: "",
+    rolls: [rollResult.roll],
+    flags: {
+      yzecore: {
+        rollState
+      }
+    }
+  };
+
+  const message = await ChatMessage.create(messageData);
+
   const templateData = {
     title,
     actorName: actor.name,
@@ -54,7 +82,9 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     diceCount,
     dice: rollResult.dice,
     successes: rollResult.successes,
-    pushed: false
+    pushed: false,
+    messageId: message.id,
+    rollState
   };
 
   const html = await foundry.applications.handlebars.renderTemplate(
@@ -62,28 +92,7 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     templateData
   );
 
-  // Create the chat message
-  const messageData = {
-  user: game.user.id,
-  speaker: ChatMessage.getSpeaker({ actor }),
-  content: html,
-  rolls: [rollResult.roll],
-  flags: {
-    yzecore: {
-      rollState: {
-        settingId: game.yzecore?.activeSettingId ?? null,
-        actorUuid: actor.uuid,
-        rollType: "attribute",
-        title,
-        pool: { attrId, diceCount, mod },
-        results: { dice: [...rollResult.dice], successes: rollResult.successes },
-        pushed: false,
-        createdAt: Date.now()
-      }
-    }
-  }
-};
-
-return ChatMessage.create(messageData);
+  await message.update({ content: html });
+  return message;
 
 }
