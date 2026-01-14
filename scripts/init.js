@@ -16,6 +16,19 @@ Hooks.on("yzeCoreSettingActivated", () => {
   for (const app of Object.values(ui.windows)) {
     if (app?.document instanceof Actor && app.rendered) {
       app.render({ force: true });
+    } else if (app?.document instanceof Item && app.rendered) {
+      app.render({ force: true });
+    }
+  }
+});
+
+Hooks.on("yzeCoreSettingDeactivated", () => {
+  // Re-render any open actor sheets so they drop the old context
+  for (const app of Object.values(ui.windows)) {
+    if (app?.document instanceof Actor && app.rendered) {
+      app.render({ force: true });
+    } else if (app?.document instanceof Item && app.rendered) {
+      app.render({ force: true });
     }
   }
 });

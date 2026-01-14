@@ -55,7 +55,26 @@ export function initYZECoreAPI() {
     scope: "world",
     config: true,
     type: Boolean,
-    default: false
+    default: false,
+
+    onChange: enabled => {
+      // Toggle ON: register + activate example
+      if (enabled) {
+        registerExampleSetting(); // should call registerSetting + activateSetting
+        ui.notifications.info("YZE Core | Example setting enabled.");
+      }
+
+      // Toggle OFF: deactivate current setting if it’s the example
+      else {
+        if (game.yzecore?.activeSettingId === "example") {
+          game.yzecore.activeSettingId = null;
+          game.yzecore.config = null;
+          Hooks.callAll("yzeCoreSettingDeactivated", { id: "example" });
+          ui.notifications.info("YZE Core | Example setting disabled.");
+        }
+      }
+
+    }
   });
 
   // "Ready work" as a function so we can run it now OR on ready
@@ -76,6 +95,5 @@ export function initYZECoreAPI() {
   // ✅ Otherwise, run on ready.
   if (game.ready) maybeEnableDevSetting();
   else Hooks.once("ready", maybeEnableDevSetting);
-
 
 }
