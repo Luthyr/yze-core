@@ -5,7 +5,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
   static DEFAULT_OPTIONS = {
     classes: ["yze-core", "sheet", "actor"],
     position: { width: 720, height: 680 },
-    window: { resizable: true, title: "YZE Core Actor" }
+    window: { resizable: true, title: "YZE Core Actor" },
 
     // ✅ explicit permissions
     viewPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED,
