@@ -57,6 +57,22 @@ export function initYZECoreAPI() {
     default: false
   });
 
+  game.settings.register("yze-core", "autoActivatedExampleSetting", {
+    name: "Auto Activated Example Setting",
+    hint: "Internal marker to only auto-activate the example setting once.",
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false
+  });
+
   // Always register the dev example setting for the switcher.
   registerExampleSetting();
+
+  // Auto-activate the example setting only once if nothing is active.
+  const alreadyActivated = game.settings.get("yze-core", "autoActivatedExampleSetting");
+  if (!alreadyActivated && !game.yzecore.activeSettingId) {
+    game.yzecore.activateSetting("example");
+    game.settings.set("yze-core", "autoActivatedExampleSetting", true);
+  }
 }

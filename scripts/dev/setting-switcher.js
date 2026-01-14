@@ -62,8 +62,6 @@ export class YZESettingSwitcherV2 extends HandlebarsApplicationMixin(Application
       : null;
     context.settings = settings;
     context.isGM = game.user?.isGM ?? false;
-    context.devExampleEnabled = game.settings.get("yze-core", "enableDevExampleSetting");
-
     return context;
   }
 }
