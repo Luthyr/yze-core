@@ -1,0 +1,48 @@
+.yze-sheet {
+  padding: 12px;
+}
+
+.yze-sheet .sheet-header {
+  margin-bottom: 12px;
+}
+
+.yze-sheet .sheet-subtitle {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.yze-sheet .sheet-section {
+  margin-bottom: 16px;
+}
+
+.yze-sheet .stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yze-sheet .stat-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.yze-sheet .stat-label {
+  font-weight: 600;
+}
+
+.yze-sheet .stat-meta {
+  color: #666;
+  font-size: 0.85em;
+}
+
+.yze-sheet .roll-button {
+  padding: 2px 8px;
+}
+
+.yze-sheet .sheet-notice {
+  padding: 8px;
+  border: 1px dashed #888;
+  color: #444;
+}

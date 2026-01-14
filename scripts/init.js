@@ -1,4 +1,9 @@
 import { initYZECoreAPI } from "./api.js";
+import { registerSheets } from "./sheets/register.js";
+
+Hooks.once("init", () => {
+  registerSheets();
+});
 
 Hooks.once("ready", () => {
   initYZECoreAPI();

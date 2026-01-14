@@ -1,0 +1,61 @@
+<form class="yze-sheet {{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <h1>
+      <input name="name" type="text" value="{{actor.name}}" />
+    </h1>
+    <div class="sheet-subtitle">{{actor.type}}</div>
+  </header>
+
+  {{#unless setting}}
+    <section class="sheet-notice">
+      No active setting. Activate or load a setting to display stats.
+    </section>
+  {{/unless}}
+
+  {{#if setting}}
+    <section class="sheet-section">
+      <h2>Attributes</h2>
+      <div class="stat-list">
+        {{#each attributes}}
+          <div class="stat-row">
+            <button type="button" class="roll-button" data-roll-attr="{{id}}">Roll</button>
+            <span class="stat-label">{{name}}</span>
+            <input type="number" name="{{path}}" value="{{value}}" />
+          </div>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="sheet-section">
+      <h2>Skills</h2>
+      <div class="stat-list">
+        {{#each skills}}
+          <div class="stat-row">
+            <button type="button" class="roll-button" data-roll-skill="{{id}}" data-attr-id="{{attribute}}">
+              Roll
+            </button>
+            <span class="stat-label">{{name}}</span>
+            <span class="stat-meta">{{linkedAttrName}}</span>
+            <input type="number" name="{{path}}" value="{{value}}" />
+          </div>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="sheet-section">
+      <h2>Resources</h2>
+      <div class="stat-list">
+        {{#each resources}}
+          <div class="stat-row">
+            <span class="stat-label">{{name}}</span>
+            <input type="number" name="{{path}}" value="{{value}}" />
+            {{#if maxPath}}
+              <span class="stat-meta">/</span>
+              <input type="number" name="{{maxPath}}" value="{{max}}" />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    </section>
+  {{/if}}
+</form>
