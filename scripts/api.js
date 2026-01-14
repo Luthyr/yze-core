@@ -47,7 +47,7 @@ export function initYZECoreAPI() {
     return game.yzecore.pushRoll(msg);
   };
 
-  // Always register in init (safe)
+    // Always register in init (safe)
   game.settings.register("yze-core", "enableDevExampleSetting", {
     name: "Enable Dev Example Setting",
     hint: "Auto-registers the dev example setting on ready (for local testing only).",
@@ -57,14 +57,21 @@ export function initYZECoreAPI() {
     default: false
   });
 
-  // Only READ world settings + activate in ready (correct)
-  Hooks.once("ready", () => {
-    if (game.settings.get("yze-core", "enableDevExampleSetting")) {
+  // "Ready work" as a function so we can run it now OR on ready
+  const maybeEnableDevSetting = () => {
+    const enabled = game.settings.get("yze-core", "enableDevExampleSetting");
+    console.log("YZE Core | Dev example setting enabled?", enabled);
+
+    if (enabled) {
       registerExampleSetting();
-      // registerExampleSetting should call:
-      // game.yzecore.registerSetting(config)
-      // game.yzecore.activateSetting(config.id)
+      console.log("YZE Core | Active setting after registerExampleSetting:", game.yzecore.activeSettingId, game.yzecore.getActiveSetting?.());
     }
-  });
+  };
+
+  // ✅ If initYZECoreAPI runs after ready, run immediately.
+  // ✅ Otherwise, run on ready.
+  if (game.ready) maybeEnableDevSetting();
+  else Hooks.once("ready", maybeEnableDevSetting);
+
 
 }
