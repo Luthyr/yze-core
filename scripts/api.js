@@ -61,6 +61,9 @@ export function initYZECoreAPI() {
       // Toggle ON: register + activate example
       if (enabled) {
         registerExampleSetting(); // should call registerSetting + activateSetting
+        if (game.yzecore?.activeSettingId !== "example") {
+          game.yzecore.activateSetting("example");
+        }
         ui.notifications.info("YZE Core | Example setting enabled.");
       }
 
