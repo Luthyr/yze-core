@@ -1,4 +1,5 @@
 // scripts/rolls/push.js
+import { buildRollSummary } from "./roll-summary.js";
 /**
  * Push (reroll) a YZE roll message.
  * @param {ChatMessage|object} message
@@ -118,6 +119,7 @@ export async function pushRoll(message, opts = {}) {
   };
   updatedRollState.pushed = true;
   updatedRollState.pushable = false;
+  updatedRollState.pushCount = (updatedRollState.pushCount ?? 0) + 1;
   updatedRollState.push = pushMeta;
   updatedRollState.updatedAt = Date.now();
 
@@ -190,6 +192,11 @@ export async function pushRoll(message, opts = {}) {
     if (!actor) {
       ui.notifications.warn("YZE Core | pushRoll: actor could not be resolved.");
     }
+  }
+
+  if (actor) {
+    const summary = buildRollSummary(updatedRollState, targetMessage.id);
+    if (summary) await actor.setFlag("yzecore", "lastRoll", summary);
   }
 
   Hooks.callAll("yzeCorePushedRoll", {

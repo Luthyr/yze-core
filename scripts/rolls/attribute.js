@@ -1,5 +1,6 @@
 // scripts/rolls/attribute.js
 import { rollD6Pool } from "./dicepool.js";
+import { buildRollSummary } from "./roll-summary.js";
 
 /**
  * Roll an attribute dice pool and post a chat card.
@@ -56,6 +57,7 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     results: { dice: [...rollResult.dice], successes: rollResult.successes },
     pushed: false,
     pushable: true,
+    pushCount: 0,
     createdAt: Date.now()
   };
 
@@ -93,6 +95,8 @@ export async function rollAttribute(actor, attrId, opts = {}) {
   );
 
   await message.update({ content: html });
+  const summary = buildRollSummary(rollState, message.id);
+  if (summary) await actor.setFlag("yzecore", "lastRoll", summary);
   return message;
 
 }

@@ -9,6 +9,8 @@
  * @param {number} [opts.mod] - bonus/penalty dice
  * @returns {Promise<ChatMessage>}
  */
+import { buildRollSummary } from "./roll-summary.js";
+
 export async function rollSkill(actor, attrId, skillId, opts = {}) {
   if (!actor) {
     ui.notifications.error("YZE Core | rollSkill: actor is required.");
@@ -87,6 +89,7 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     },
     pushed: false,
     pushable: true,
+    pushCount: 0,
     createdAt: Date.now()
   };
 
@@ -131,5 +134,7 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
   );
 
   await message.update({ content: html });
+  const summary = buildRollSummary(rollState, message.id);
+  if (summary) await actor.setFlag("yzecore", "lastRoll", summary);
   return message;
 }

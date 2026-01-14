@@ -16,6 +16,21 @@
 
   {{#if yze.hasActiveSetting}}
 
+    {{!-- LAST ROLL --}}
+    <section class="yze-block yze-last-roll">
+      <h3>Last Roll</h3>
+      {{#if lastRoll}}
+        <div class="yze-row yze-last-roll-row">
+          <label class="yze-label">{{lastRoll.label}}</label>
+          <span class="yze-subtle">Successes: {{lastRoll.successes}}</span>
+          <span class="yze-subtle">Banes: {{lastRoll.banes}}</span>
+          <span class="yze-subtle">Pushed: {{#if lastRoll.pushed}}Yes{{else}}No{{/if}}</span>
+        </div>
+      {{else}}
+        <p class="hint">No rolls yet.</p>
+      {{/if}}
+    </section>
+
     {{!-- ATTRIBUTES --}}
     <section class="yze-block">
       <h3>Attributes</h3>
