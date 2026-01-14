@@ -5,6 +5,9 @@ Notes:
 - Sheet registration is centralized in `scripts/sheets/register.js` and called during the `init` hook.
 
 // YZE Core v0.7.0
+// Stable: push roll button
+
+// YZE Core v0.7.0
 // Stable: setting configuration and switching
 
 // YZE Core v0.6.0
