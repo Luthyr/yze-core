@@ -214,10 +214,12 @@ export function initYZECoreAPI() {
         const maxStacks = Number(def.maxStacks ?? 3) || 3;
         const clampedStacks = Math.max(1, Math.min(maxStacks, stacks));
         const total = Number(conditionTotals.get(def.id) ?? 0) || 0;
+        if (!total) return null;
         const sign = total >= 0 ? "+" : "-";
         const stackLabel = def.stacks && clampedStacks > 1 ? ` (x${clampedStacks})` : "";
         return `${def.name ?? def.id}${stackLabel}: ${sign}${Math.abs(total)}`;
-      });
+      })
+      .filter(Boolean);
 
     const formatTotals = totals => totals
       .map(({ source, total }) => {
