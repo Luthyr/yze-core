@@ -31,6 +31,53 @@
       {{/if}}
     </section>
 
+    {{!-- MODIFIERS --}}
+    <section class="yze-block yze-modifiers">
+      <h3>Modifiers</h3>
+      <div class="yze-modifier-list">
+        {{#each modifiers as |mod|}}
+          <div class="yze-row yze-modifier-row" data-modifier-id="{{mod.id}}">
+            <input type="checkbox"
+                   data-action="toggleModifier"
+                   data-id="{{mod.id}}"
+                   {{#if mod.enabled}}checked{{/if}}
+                   {{#unless @root.editable}}disabled{{/unless}} />
+
+            <input type="text"
+                   class="yze-input"
+                   placeholder="Source"
+                   data-action="editModifier"
+                   data-field="source"
+                   data-id="{{mod.id}}"
+                   value="{{mod.source}}"
+                   {{#unless @root.editable}}disabled{{/unless}} />
+
+            <input type="number"
+                   class="yze-input"
+                   data-action="editModifier"
+                   data-field="value"
+                   data-id="{{mod.id}}"
+                   value="{{mod.value}}"
+                   step="1"
+                   {{#unless @root.editable}}disabled{{/unless}} />
+
+            <button type="button"
+                    data-action="removeModifier"
+                    data-id="{{mod.id}}"
+                    {{#unless @root.editable}}disabled{{/unless}}>
+              Remove
+            </button>
+          </div>
+        {{/each}}
+      </div>
+
+      <button type="button"
+              data-action="addModifier"
+              {{#unless @root.editable}}disabled{{/unless}}>
+        + Add Modifier
+      </button>
+    </section>
+
     {{!-- ATTRIBUTES --}}
     <section class="yze-block">
       <h3>Attributes</h3>

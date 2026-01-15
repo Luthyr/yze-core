@@ -64,3 +64,25 @@
   background: #8a2f2f !important;
   border-color: #6b2424 !important;
 }
+
+.yze-modifiers .yze-modifier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.yze-modifiers .yze-modifier-row {
+  display: grid;
+  grid-template-columns: auto 1fr 80px auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.yze-modifiers .yze-modifier-row .yze-input {
+  width: 100%;
+}
+
+.yze-modifiers button {
+  padding: 4px 10px;
+}

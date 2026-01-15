@@ -36,7 +36,17 @@ export function initYZECoreAPI() {
     const attributeId = config.attribute;
     const skillId = config.skill;
     const baseOverride = config.baseOverride;
-    const modifiers = Array.isArray(config.modifiers) ? [...config.modifiers] : [];
+    const actorModifiers = (actor.flags?.["yze-core"]?.modifiers ?? [])
+      .filter(mod => mod?.enabled)
+      .map(mod => ({
+        source: mod.source ?? "Modifier",
+        value: Number(mod.value ?? 0) || 0
+      }));
+
+    const modifiers = [
+      ...actorModifiers,
+      ...(Array.isArray(config.modifiers) ? config.modifiers : [])
+    ];
 
     let attrValue = 0;
     let skillValue = 0;

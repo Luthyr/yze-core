@@ -38,6 +38,22 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     root.querySelectorAll("[data-action='rollSkill']").forEach(el => {
       el.addEventListener("click", event => this._onRollSkill(event));
     });
+
+    root.querySelectorAll("[data-action='addModifier']").forEach(el => {
+      el.addEventListener("click", event => this._onAddModifier(event));
+    });
+
+    root.querySelectorAll("[data-action='removeModifier']").forEach(el => {
+      el.addEventListener("click", event => this._onRemoveModifier(event));
+    });
+
+    root.querySelectorAll("[data-action='toggleModifier']").forEach(el => {
+      el.addEventListener("change", event => this._onToggleModifier(event));
+    });
+
+    root.querySelectorAll("[data-action='editModifier']").forEach(el => {
+      el.addEventListener("change", event => this._onEditModifier(event));
+    });
   }
 
   _onRollAttr(event) {
@@ -51,6 +67,57 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     const attrId = event.currentTarget?.dataset?.attrId;
     if (!skillId || !attrId) return;
     return game.yzecore.rollSkill(this.document, attrId, skillId);
+  }
+
+  async _onAddModifier() {
+    const modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
+    const next = [
+      ...modifiers,
+      {
+        id: foundry.utils.randomID(),
+        source: "",
+        value: 0,
+        enabled: true
+      }
+    ];
+    await this.document.update({ "flags.yze-core.modifiers": next });
+  }
+
+  async _onRemoveModifier(event) {
+    const id = event.currentTarget?.dataset?.id;
+    if (!id) return;
+    const modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
+    const next = modifiers.filter(mod => mod.id !== id);
+    await this.document.update({ "flags.yze-core.modifiers": next });
+  }
+
+  async _onToggleModifier(event) {
+    const id = event.currentTarget?.dataset?.id;
+    if (!id) return;
+    const modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
+    const next = modifiers.map(mod => (
+      mod.id === id
+        ? { ...mod, enabled: !!event.currentTarget.checked }
+        : mod
+    ));
+    await this.document.update({ "flags.yze-core.modifiers": next });
+  }
+
+  async _onEditModifier(event) {
+    const id = event.currentTarget?.dataset?.id;
+    const field = event.currentTarget?.dataset?.field;
+    if (!id || !field) return;
+    const value =
+      field === "value"
+        ? Number(event.currentTarget.value ?? 0) || 0
+        : String(event.currentTarget.value ?? "");
+    const modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
+    const next = modifiers.map(mod => (
+      mod.id === id
+        ? { ...mod, [field]: value }
+        : mod
+    ));
+    await this.document.update({ "flags.yze-core.modifiers": next });
   }
 
   async _prepareContext(options) {
@@ -85,6 +152,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     context.system = this.document.system;
     context.editable = this.isEditable || this.document.isOwner;
     context.lastRoll = this.document.getFlag("yze-core", "lastRoll") ?? null;
+    context.modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
 
     // form footer buttons
     context.buttons = [
