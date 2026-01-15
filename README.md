@@ -5,6 +5,9 @@ Notes:
 - Sheet registration is centralized in `scripts/sheets/register.js` and called during the `init` hook.
 
 
+// YZE Core v0.10.0
+// Stable: item modifiers
+
 // YZE Core v0.9.0
 // Stable: setting switcher updates
 
