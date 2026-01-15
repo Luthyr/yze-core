@@ -63,6 +63,14 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
       el.addEventListener("click", event => this._onCreateItem(event));
     });
 
+    root.querySelectorAll("[data-action='createGear']").forEach(el => {
+      el.addEventListener("click", event => this._onCreateItem(event, "gear"));
+    });
+
+    root.querySelectorAll("[data-action='createTalent']").forEach(el => {
+      el.addEventListener("click", event => this._onCreateItem(event, "talent"));
+    });
+
     root.querySelectorAll("[data-action='editItem']").forEach(el => {
       el.addEventListener("click", event => this._onEditItem(event));
     });
@@ -148,9 +156,9 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     await item.update({ "system.equipped": !!event.currentTarget.checked });
   }
 
-  async _onCreateItem() {
+  async _onCreateItem(event, forcedType = null) {
     const itemTypes = game.system.documentTypes?.Item ?? [];
-    const type = itemTypes[0] ?? "gear";
+    const type = forcedType ?? itemTypes[0] ?? "gear";
     await this.document.createEmbeddedDocuments("Item", [
       { name: "New Item", type }
     ]);
@@ -211,12 +219,41 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     context.editable = this.isEditable || this.document.isOwner;
     context.lastRoll = this.document.getFlag("yze-core", "lastRoll") ?? null;
     context.modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
-    context.items = (this.document.items?.contents ?? []).map(item => ({
-      id: item.id,
-      name: item.name,
-      type: item.type,
-      equipped: !!item.system?.equipped
-    }));
+    const attrNameById = new Map(
+      (context.attributesRendered ?? []).map(attr => [attr.id, attr.name])
+    );
+    const skillNameById = new Map(
+      (context.skillsRendered ?? []).map(skill => [skill.id, skill.name])
+    );
+    const items = (this.document.items?.contents ?? []).map(item => {
+      const modifiers = Array.isArray(item.system?.modifiers)
+        ? item.system.modifiers
+        : [];
+      const modifierLabels = modifiers.map(mod => {
+        const value = Number(mod?.value ?? 0) || 0;
+        const sign = value >= 0 ? "+" : "-";
+        const scope = String(mod?.scope ?? "all");
+        if (scope === "attribute") {
+          const attrName = attrNameById.get(mod?.attribute) ?? mod?.attribute ?? "Attribute";
+          return `${sign}${Math.abs(value)} ${attrName}`;
+        }
+        if (scope === "skill") {
+          const skillName = skillNameById.get(mod?.skill) ?? mod?.skill ?? "Skill";
+          return `${sign}${Math.abs(value)} ${skillName}`;
+        }
+        return `${sign}${Math.abs(value)} All`;
+      });
+      return {
+        id: item.id,
+        name: item.name,
+        type: item.type,
+        equipped: !!item.system?.equipped,
+        modifiers: modifierLabels
+      };
+    });
+    context.items = items;
+    context.gearItems = items.filter(item => item.type === "gear");
+    context.talentItems = items.filter(item => item.type === "talent");
     context.conditions = game.yzecore.getConditions?.(this.document) ?? [];
 
     // form footer buttons

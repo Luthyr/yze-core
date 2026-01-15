@@ -20,7 +20,7 @@
       <div class="yze-left-column">
         {{!-- ATTRIBUTES + SKILLS --}}
         <section class="yze-block yze-attributes">
-          <h3>Attributes & Skills</h3>
+          <h3>Attributes</h3>
           <div class="yze-attr-groups">
             {{#each attributesRendered as |attr|}}
               <div class="yze-attr-group">
@@ -44,8 +44,9 @@
                 </div>
 
                 <div class="yze-skill-list">
+                  <div class="yze-subsection-title">Skills</div>
                   {{#each @root.skillsRendered as |skill|}}
-                    {{#if (eq skill.attribute ../attr.id)}}
+                    {{#if (eq skill.attribute ../id)}}
                       <div class="yze-row yze-skill-row" data-skill="{{skill.id}}">
                         <button type="button"
                                 class="yze-roll yze-skill-roll"
@@ -73,8 +74,8 @@
 
         {{!-- RESOURCES --}}
         {{#if resourcesRendered}}
-          <section class="yze-block yze-resources">
-            <h3>Resources</h3>
+        <section class="yze-block yze-resources">
+          <h3>Resources</h3>
             <div class="yze-resource-list">
               {{#each resourcesRendered as |res|}}
                 <div class="yze-row yze-resource-row" data-resource="{{res.resId}}">
@@ -203,10 +204,10 @@
 
         {{!-- ITEMS --}}
         <section class="yze-block yze-items">
-          <h3>Items</h3>
-          {{#if items.length}}
+          <h3>Equipment</h3>
+          {{#if gearItems.length}}
             <div class="yze-item-list">
-              {{#each items as |item|}}
+              {{#each gearItems as |item|}}
                 <div class="yze-row yze-item-row" data-item-id="{{item.id}}">
                   <input type="checkbox"
                          data-action="toggleItemEquipped"
@@ -222,16 +223,63 @@
                     Edit
                   </button>
                 </div>
+                {{#if item.modifiers.length}}
+                  <div class="yze-item-mods">
+                    {{#each item.modifiers as |label|}}
+                      <span class="yze-item-mod">{{label}}</span>
+                    {{/each}}
+                  </div>
+                {{/if}}
               {{/each}}
             </div>
           {{else}}
-            <p class="hint">No items yet.</p>
+            <p class="hint">No equipment yet.</p>
           {{/if}}
 
           <button type="button"
-                  data-action="createItem"
+                  data-action="createGear"
                   {{#unless @root.editable}}disabled{{/unless}}>
-            + New Item
+            + New Gear
+          </button>
+        </section>
+
+        <section class="yze-block yze-talents">
+          <h3>Talents</h3>
+          {{#if talentItems.length}}
+            <div class="yze-item-list">
+              {{#each talentItems as |item|}}
+                <div class="yze-row yze-item-row" data-item-id="{{item.id}}">
+                  <input type="checkbox"
+                         data-action="toggleItemEquipped"
+                         data-item-id="{{item.id}}"
+                         {{#if item.equipped}}checked{{/if}}
+                         {{#unless @root.editable}}disabled{{/unless}} />
+
+                  <span class="yze-label">{{item.name}}</span>
+
+                  <button type="button"
+                          data-action="editItem"
+                          data-item-id="{{item.id}}">
+                    Edit
+                  </button>
+                </div>
+                {{#if item.modifiers.length}}
+                  <div class="yze-item-mods">
+                    {{#each item.modifiers as |label|}}
+                      <span class="yze-item-mod">{{label}}</span>
+                    {{/each}}
+                  </div>
+                {{/if}}
+              {{/each}}
+            </div>
+          {{else}}
+            <p class="hint">No talents yet.</p>
+          {{/if}}
+
+          <button type="button"
+                  data-action="createTalent"
+                  {{#unless @root.editable}}disabled{{/unless}}>
+            + New Talent
           </button>
         </section>
       </div>

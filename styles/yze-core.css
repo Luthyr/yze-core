@@ -65,12 +65,16 @@
   border: none;
   background: transparent;
   cursor: pointer;
+  display: block;
+  z-index: 1;
 }
 
 .yze-attr-value {
   position: relative;
-  z-index: 1;
-  width: 100%;
+  z-index: 2;
+  width: 64px;
+  margin: 0 auto;
+  display: block;
   border: none;
   background: transparent;
   font-size: 2.2em;
@@ -81,7 +85,7 @@
 
 .yze-attr-name {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   margin-top: 6px;
   font-size: 0.75em;
   font-variant: small-caps;
@@ -95,6 +99,13 @@
   padding: 6px 8px;
   border: 1px solid #d5c7b1;
   background: #f7f1e8;
+}
+
+.yze-subsection-title {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.75em;
+  color: #5a4b39;
 }
 
 .yze-skill-row {
@@ -139,6 +150,26 @@
   background: #ede2d1;
 }
 
+.yze-track::-webkit-progress-bar {
+  background: #ede2d1;
+}
+
+.yze-track::-webkit-progress-value {
+  background: #9b8a73;
+}
+
+.yze-track::-moz-progress-bar {
+  background: #9b8a73;
+}
+
+.yze-resource-row[data-resource="stress"] .yze-track::-webkit-progress-value {
+  background: #b33a3a;
+}
+
+.yze-resource-row[data-resource="stress"] .yze-track::-moz-progress-bar {
+  background: #b33a3a;
+}
+
 .yze-resource-values {
   display: inline-flex;
   gap: 6px;
@@ -162,6 +193,21 @@
   grid-template-columns: auto 1fr auto;
 }
 
+.yze-items .yze-item-mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 6px 26px;
+}
+
+.yze-items .yze-item-mod {
+  font-size: 0.75em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid #c7b9a1;
+  background: #f7f1e8;
+  padding: 2px 6px;
+}
 .yze-last-roll {
   border-top: 1px dashed #c7b9a1;
   padding-top: 10px;
