@@ -2,6 +2,176 @@
   padding: 12px;
 }
 
+.yze-actor-sheet {
+  font-family: "IM Fell English", "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  color: #2a2118;
+  background:
+    linear-gradient(180deg, #f5f0e8 0%, #efe6d8 100%);
+  border: 1px solid #c7b9a1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.yze-actor-sheet .yze-header {
+  border-bottom: 1px solid #c7b9a1;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.yze-actor-sheet h3 {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.95em;
+  margin-bottom: 8px;
+}
+
+.yze-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.yze-left-column,
+.yze-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.yze-attr-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.yze-attr-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.yze-attr-tile {
+  position: relative;
+  background: #fbf7f1;
+  border: 2px solid #2a2118;
+  border-radius: 6px;
+  padding: 12px 10px 10px;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px #d8cbb7;
+}
+
+.yze-attr-tile .yze-tile-roll {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.yze-attr-value {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 2.2em;
+  font-weight: 700;
+  text-align: center;
+  color: #2a2118;
+}
+
+.yze-attr-name {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  font-size: 0.75em;
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+}
+
+.yze-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid #d5c7b1;
+  background: #f7f1e8;
+}
+
+.yze-skill-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.yze-skill-roll {
+  padding: 2px 6px;
+  border: 1px solid #2a2118;
+  background: #ede2d1;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.yze-skill-value {
+  width: 52px;
+  text-align: center;
+  border: 1px solid #c7b9a1;
+  background: #fffaf2;
+}
+
+.yze-resources .yze-resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.yze-resource-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.yze-track {
+  width: 100%;
+  height: 12px;
+  border: 1px solid #2a2118;
+  background: #ede2d1;
+}
+
+.yze-resource-values {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.yze-resource-values input {
+  width: 64px;
+  text-align: center;
+}
+
+.yze-conditions .yze-condition-row {
+  grid-template-columns: auto 1fr auto;
+}
+
+.yze-modifiers .yze-modifier-row {
+  grid-template-columns: auto 1fr 80px auto;
+}
+
+.yze-items .yze-item-row {
+  grid-template-columns: auto 1fr auto;
+}
+
+.yze-last-roll {
+  border-top: 1px dashed #c7b9a1;
+  padding-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .yze-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .yze-sheet .sheet-header {
   margin-bottom: 12px;
 }

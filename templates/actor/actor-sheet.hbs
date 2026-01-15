@@ -1,4 +1,4 @@
-<section class="yze-actor-sheet">
+<section class="yze-actor-sheet yze-sheet">
 
   <header class="yze-header">
     <div class="yze-title">
@@ -16,6 +16,227 @@
 
   {{#if yze.hasActiveSetting}}
 
+    <section class="yze-block yze-main-grid">
+      <div class="yze-left-column">
+        {{!-- ATTRIBUTES + SKILLS --}}
+        <section class="yze-block yze-attributes">
+          <h3>Attributes & Skills</h3>
+          <div class="yze-attr-groups">
+            {{#each attributesRendered as |attr|}}
+              <div class="yze-attr-group">
+                <div class="yze-attr-tile" data-attr="{{attr.id}}">
+                  <button type="button"
+                          class="yze-roll yze-tile-roll"
+                          data-action="rollAttr"
+                          data-attr-id="{{attr.id}}"
+                          aria-label="Roll {{attr.name}}">
+                  </button>
+
+                  <input type="number"
+                         class="yze-attr-value"
+                         name="system.attributes.{{attr.id}}.value"
+                         value="{{attr.value}}"
+                         min="0"
+                         step="1"
+                         {{#unless @root.editable}}disabled{{/unless}} />
+
+                  <div class="yze-attr-name">{{attr.name}}</div>
+                </div>
+
+                <div class="yze-skill-list">
+                  {{#each @root.skillsRendered as |skill|}}
+                    {{#if (eq skill.attribute ../attr.id)}}
+                      <div class="yze-row yze-skill-row" data-skill="{{skill.id}}">
+                        <button type="button"
+                                class="yze-roll yze-skill-roll"
+                                data-action="rollSkill"
+                                data-skill-id="{{skill.id}}"
+                                data-attr-id="{{skill.attribute}}">
+                          Roll
+                        </button>
+                        <label class="yze-label">{{skill.name}}</label>
+                        <input type="number"
+                               class="yze-skill-value"
+                               name="system.skills.{{skill.id}}.value"
+                               value="{{skill.value}}"
+                               min="0"
+                               step="1"
+                               {{#unless @root.editable}}disabled{{/unless}} />
+                      </div>
+                    {{/if}}
+                  {{/each}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+
+        {{!-- RESOURCES --}}
+        {{#if resourcesRendered}}
+          <section class="yze-block yze-resources">
+            <h3>Resources</h3>
+            <div class="yze-resource-list">
+              {{#each resourcesRendered as |res|}}
+                <div class="yze-row yze-resource-row" data-resource="{{res.resId}}">
+                  <label class="yze-label">{{res.name}}</label>
+                  <progress class="yze-track"
+                            value="{{res.value}}"
+                            max="{{res.max}}">
+                  </progress>
+                  <div class="yze-resource-values">
+                    <input type="number"
+                           class="yze-input yze-resource-value"
+                           name="{{res.path}}"
+                           value="{{res.value}}"
+                           min="0"
+                           step="1"
+                           {{#unless @root.editable}}disabled{{/unless}} />
+                    {{#if res.maxPath}}
+                      <span class="yze-subtle">/</span>
+                      <input type="number"
+                             class="yze-input yze-input-max"
+                             name="{{res.maxPath}}"
+                             value="{{res.max}}"
+                             min="0"
+                             step="1"
+                             {{#unless @root.editable}}disabled{{/unless}} />
+                    {{/if}}
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          </section>
+        {{/if}}
+      </div>
+
+      <div class="yze-right-column">
+        {{!-- CONDITIONS --}}
+        <section class="yze-block yze-conditions">
+          <h3>Conditions</h3>
+          {{#if conditions.length}}
+            <div class="yze-condition-list">
+              {{#each conditions as |cond|}}
+                <div class="yze-row yze-condition-row" data-condition-id="{{cond.id}}">
+                  <input type="checkbox"
+                         data-action="toggleCondition"
+                         data-id="{{cond.id}}"
+                         {{#if cond.enabled}}checked{{/if}}
+                         {{#unless @root.editable}}disabled{{/unless}} />
+
+                  <span class="yze-label" title="{{cond.description}}">
+                    {{cond.name}}
+                  </span>
+
+                  {{#if cond.stacks}}
+                    <div class="yze-condition-stacks">
+                      <button type="button"
+                              data-action="adjustConditionStacks"
+                              data-id="{{cond.id}}"
+                              data-delta="-1"
+                              {{#unless @root.editable}}disabled{{/unless}}>
+                        -
+                      </button>
+                      <span class="yze-subtle">x{{cond.stacks}}</span>
+                      <button type="button"
+                              data-action="adjustConditionStacks"
+                              data-id="{{cond.id}}"
+                              data-delta="1"
+                              {{#unless @root.editable}}disabled{{/unless}}>
+                        +
+                      </button>
+                    </div>
+                  {{/if}}
+                </div>
+              {{/each}}
+            </div>
+          {{else}}
+            <p class="hint">No conditions defined in the active setting.</p>
+          {{/if}}
+        </section>
+
+        {{!-- MODIFIERS --}}
+        <section class="yze-block yze-modifiers">
+          <h3>Modifiers</h3>
+          <div class="yze-modifier-list">
+            {{#each modifiers as |mod|}}
+              <div class="yze-row yze-modifier-row" data-modifier-id="{{mod.id}}">
+                <input type="checkbox"
+                       data-action="toggleModifier"
+                       data-id="{{mod.id}}"
+                       {{#if mod.enabled}}checked{{/if}}
+                       {{#unless @root.editable}}disabled{{/unless}} />
+
+                <input type="text"
+                       class="yze-input"
+                       placeholder="Source"
+                       data-action="editModifier"
+                       data-field="source"
+                       data-id="{{mod.id}}"
+                       value="{{mod.source}}"
+                       {{#unless @root.editable}}disabled{{/unless}} />
+
+                <input type="number"
+                       class="yze-input"
+                       data-action="editModifier"
+                       data-field="value"
+                       data-id="{{mod.id}}"
+                       value="{{mod.value}}"
+                       step="1"
+                       {{#unless @root.editable}}disabled{{/unless}} />
+
+                <button type="button"
+                        data-action="removeModifier"
+                        data-id="{{mod.id}}"
+                        {{#unless @root.editable}}disabled{{/unless}}>
+                  Remove
+                </button>
+              </div>
+            {{/each}}
+          </div>
+
+          <button type="button"
+                  data-action="addModifier"
+                  {{#unless @root.editable}}disabled{{/unless}}>
+            + Add Modifier
+          </button>
+        </section>
+
+        {{!-- ITEMS --}}
+        <section class="yze-block yze-items">
+          <h3>Items</h3>
+          {{#if items.length}}
+            <div class="yze-item-list">
+              {{#each items as |item|}}
+                <div class="yze-row yze-item-row" data-item-id="{{item.id}}">
+                  <input type="checkbox"
+                         data-action="toggleItemEquipped"
+                         data-item-id="{{item.id}}"
+                         {{#if item.equipped}}checked{{/if}}
+                         {{#unless @root.editable}}disabled{{/unless}} />
+
+                  <span class="yze-label">{{item.name}}</span>
+
+                  <button type="button"
+                          data-action="editItem"
+                          data-item-id="{{item.id}}">
+                    Edit
+                  </button>
+                </div>
+              {{/each}}
+            </div>
+          {{else}}
+            <p class="hint">No items yet.</p>
+          {{/if}}
+
+          <button type="button"
+                  data-action="createItem"
+                  {{#unless @root.editable}}disabled{{/unless}}>
+            + New Item
+          </button>
+        </section>
+      </div>
+    </section>
+
     {{!-- LAST ROLL --}}
     <section class="yze-block yze-last-roll">
       <h3>Last Roll</h3>
@@ -30,225 +251,6 @@
         <p class="hint">No rolls yet.</p>
       {{/if}}
     </section>
-
-    {{!-- MODIFIERS --}}
-    <section class="yze-block yze-modifiers">
-      <h3>Modifiers</h3>
-      <div class="yze-modifier-list">
-        {{#each modifiers as |mod|}}
-          <div class="yze-row yze-modifier-row" data-modifier-id="{{mod.id}}">
-            <input type="checkbox"
-                   data-action="toggleModifier"
-                   data-id="{{mod.id}}"
-                   {{#if mod.enabled}}checked{{/if}}
-                   {{#unless @root.editable}}disabled{{/unless}} />
-
-            <input type="text"
-                   class="yze-input"
-                   placeholder="Source"
-                   data-action="editModifier"
-                   data-field="source"
-                   data-id="{{mod.id}}"
-                   value="{{mod.source}}"
-                   {{#unless @root.editable}}disabled{{/unless}} />
-
-            <input type="number"
-                   class="yze-input"
-                   data-action="editModifier"
-                   data-field="value"
-                   data-id="{{mod.id}}"
-                   value="{{mod.value}}"
-                   step="1"
-                   {{#unless @root.editable}}disabled{{/unless}} />
-
-            <button type="button"
-                    data-action="removeModifier"
-                    data-id="{{mod.id}}"
-                    {{#unless @root.editable}}disabled{{/unless}}>
-              Remove
-            </button>
-          </div>
-        {{/each}}
-      </div>
-
-      <button type="button"
-              data-action="addModifier"
-              {{#unless @root.editable}}disabled{{/unless}}>
-        + Add Modifier
-      </button>
-    </section>
-
-    {{!-- CONDITIONS --}}
-    <section class="yze-block yze-conditions">
-      <h3>Conditions</h3>
-      {{#if conditions.length}}
-        <div class="yze-condition-list">
-          {{#each conditions as |cond|}}
-            <div class="yze-row yze-condition-row" data-condition-id="{{cond.id}}">
-              <input type="checkbox"
-                     data-action="toggleCondition"
-                     data-id="{{cond.id}}"
-                     {{#if cond.enabled}}checked{{/if}}
-                     {{#unless @root.editable}}disabled{{/unless}} />
-
-              <span class="yze-label" title="{{cond.description}}">
-                {{cond.name}}
-              </span>
-
-              {{#if cond.stacks}}
-                <div class="yze-condition-stacks">
-                  <button type="button"
-                          data-action="adjustConditionStacks"
-                          data-id="{{cond.id}}"
-                          data-delta="-1"
-                          {{#unless @root.editable}}disabled{{/unless}}>
-                    -
-                  </button>
-                  <span class="yze-subtle">x{{cond.stacks}}</span>
-                  <button type="button"
-                          data-action="adjustConditionStacks"
-                          data-id="{{cond.id}}"
-                          data-delta="1"
-                          {{#unless @root.editable}}disabled{{/unless}}>
-                    +
-                  </button>
-                </div>
-              {{/if}}
-            </div>
-          {{/each}}
-        </div>
-      {{else}}
-        <p class="hint">No conditions defined in the active setting.</p>
-      {{/if}}
-    </section>
-
-    {{!-- ITEMS --}}
-    <section class="yze-block yze-items">
-      <h3>Items</h3>
-      {{#if items.length}}
-        <div class="yze-item-list">
-          {{#each items as |item|}}
-            <div class="yze-row yze-item-row" data-item-id="{{item.id}}">
-              <input type="checkbox"
-                     data-action="toggleItemEquipped"
-                     data-item-id="{{item.id}}"
-                     {{#if item.equipped}}checked{{/if}}
-                     {{#unless @root.editable}}disabled{{/unless}} />
-
-              <span class="yze-label">{{item.name}}</span>
-
-              <button type="button"
-                      data-action="editItem"
-                      data-item-id="{{item.id}}">
-                Edit
-              </button>
-            </div>
-          {{/each}}
-        </div>
-      {{else}}
-        <p class="hint">No items yet.</p>
-      {{/if}}
-
-      <button type="button"
-              data-action="createItem"
-              {{#unless @root.editable}}disabled{{/unless}}>
-        + New Item
-      </button>
-    </section>
-
-    {{!-- ATTRIBUTES --}}
-    <section class="yze-block">
-      <h3>Attributes</h3>
-
-      <div class="yze-grid yze-grid-attrs">
-        {{#each attributesRendered as |attr|}}
-          <div class="yze-row yze-attr" data-attr="{{attr.id}}">
-            <button type="button"
-                    class="yze-roll"
-                    data-action="rollAttr"
-                    data-attr-id="{{attr.id}}">
-              Roll
-            </button>
-
-            <label class="yze-label">{{attr.name}}</label>
-
-            <input type="number"
-                   class="yze-input"
-                   name="system.attributes.{{attr.id}}.value"
-                   value="{{attr.value}}"
-                   min="0"
-                   step="1"
-                   {{#unless @root.editable}}disabled{{/unless}} />
-          </div>
-        {{/each}}
-      </div>
-    </section>
-
-    {{!-- SKILLS --}}
-    <section class="yze-block">
-      <h3>Skills</h3>
-
-      <div class="yze-grid yze-grid-skills">
-        {{#each skillsRendered as |skill|}}
-          <div class="yze-row yze-skill" data-skill="{{skill.id}}">
-            <button type="button"
-                    class="yze-roll"
-                    data-action="rollSkill"
-                    data-skill-id="{{skill.id}}"
-                    data-attr-id="{{skill.attribute}}">
-              Roll
-            </button>
-
-            <label class="yze-label">
-              {{skill.name}}
-              <span class="yze-subtle">({{skill.attribute}})</span>
-            </label>
-
-            <input type="number"
-                   class="yze-input"
-                   name="system.skills.{{skill.id}}.value"
-                   value="{{skill.value}}"
-                   min="0"
-                   step="1"
-                   {{#unless @root.editable}}disabled{{/unless}} />
-          </div>
-        {{/each}}
-      </div>
-    </section>
-
-   {{!-- RESOURCES --}}
-  {{#if resourcesRendered}}
-    <section class="yze-block">
-      <h3>Resources</h3>
-
-      <div class="yze-grid yze-grid-resources">
-        {{#each resourcesRendered as |res|}}
-          <div class="yze-row yze-resource" data-resource="{{res.resId}}">
-            <label class="yze-label">{{res.name}}</label>
-
-            <input type="number"
-                  class="yze-input"
-                  name="{{res.path}}"
-                  value="{{res.value}}"
-                  min="0"
-                  step="1"
-                  {{#unless @root.editable}}disabled{{/unless}} />
-
-            {{#if res.maxPath}}
-              <span class="yze-subtle">/</span>
-              <input type="number"
-                    class="yze-input yze-input-max"
-                    name="{{res.maxPath}}"
-                    value="{{res.max}}"
-                    min="0"
-                    step="1"
-                    {{#unless @root.editable}}disabled{{/unless}} />
-            {{/if}}
-          </div>
-        {{/each}}
-      </div>
-    </section>
-  {{/if}}
 
   {{else}}
 
