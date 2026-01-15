@@ -40,6 +40,21 @@ Hooks.once("ready", async () => {
   }
     await game.settings.set("yze-core", "migratedLegacyFlags", true);
   }
+
+  // Default existing talent items to equipped (one-time best-effort)
+  const migratedTalents = game.settings.get("yze-core", "migratedTalentEquipped");
+  if (!migratedTalents) {
+    for (const actor of game.actors.contents) {
+      const talents = (actor.items?.contents ?? []).filter(item => item.type === "talent");
+      const updates = talents
+        .filter(item => !item.system?.equipped)
+        .map(item => ({ _id: item.id, "system.equipped": true }));
+      if (updates.length) {
+        await actor.updateEmbeddedDocuments("Item", updates);
+      }
+    }
+    await game.settings.set("yze-core", "migratedTalentEquipped", true);
+  }
 });
 
 Hooks.on("yzeCoreSettingActivated", async () => {

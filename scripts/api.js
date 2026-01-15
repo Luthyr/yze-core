@@ -344,6 +344,15 @@ export function initYZECoreAPI() {
     default: false
   });
 
+  game.settings.register("yze-core", "migratedTalentEquipped", {
+    name: "Migrated Talent Equipped",
+    hint: "Internal marker to default existing talent items to equipped.",
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false
+  });
+
   game.settings.register("yze-core", "autoActivatedExampleSetting", {
     name: "Auto Activated Example Setting",
     hint: "Internal marker to only auto-activate the example setting once.",

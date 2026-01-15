@@ -17,7 +17,7 @@
     },
     "talent": {
       "rank": 1,
-      "equipped": false,
+      "equipped": true,
       "modifiers": []
     }
   }
