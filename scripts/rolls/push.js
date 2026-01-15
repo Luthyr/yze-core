@@ -77,11 +77,11 @@ export async function pushRoll(message, opts = {}) {
       Number.isFinite(baseCount) &&
       Number.isFinite(totalCount) &&
       baseCount >= 0 &&
-      totalCount >= baseCount &&
       totalCount <= updatedDice.length
     ) {
-      attributeDice = updatedDice.slice(0, baseCount);
-      modDice = updatedDice.slice(baseCount);
+      const baseSlice = Math.min(baseCount, updatedDice.length);
+      attributeDice = updatedDice.slice(0, baseSlice);
+      modDice = updatedDice.slice(baseSlice);
     } else {
       attributeDice = [];
       skillDice = [];
@@ -98,12 +98,15 @@ export async function pushRoll(message, opts = {}) {
       Number.isFinite(attrValue) &&
       Number.isFinite(skillValue) &&
       attrValue >= 0 &&
-      skillValue >= 0 &&
-      splitCount <= updatedDice.length
+      skillValue >= 0
     ) {
-      attributeDice = updatedDice.slice(0, attrValue);
-      skillDice = updatedDice.slice(attrValue, splitCount);
-      modDice = updatedDice.slice(splitCount);
+      const safeAttr = Math.min(attrValue, updatedDice.length);
+      const remaining = Math.max(0, updatedDice.length - safeAttr);
+      const safeSkill = Math.min(skillValue, remaining);
+      const splitAt = safeAttr + safeSkill;
+      attributeDice = updatedDice.slice(0, safeAttr);
+      skillDice = updatedDice.slice(safeAttr, splitAt);
+      modDice = updatedDice.slice(splitAt);
     } else {
       attributeDice = [];
       skillDice = [];
