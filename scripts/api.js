@@ -40,7 +40,8 @@ export function initYZECoreAPI() {
       .filter(mod => mod?.enabled)
       .map(mod => ({
         source: mod.source ?? "Modifier",
-        value: Number(mod.value ?? 0) || 0
+        value: Number(mod.value ?? 0) || 0,
+        type: "manual"
       }));
 
     const setting = game.yzecore.getActiveSetting?.() ?? null;
@@ -61,18 +62,20 @@ export function initYZECoreAPI() {
       const multiplier = isStacking ? clampedStacks : 1;
       const stackLabel = isStacking ? `(x${clampedStacks})` : "";
       return mods.map(mod => ({
+        conditionId: def.id,
         source: def.name ?? def.id,
         value: (Number(mod?.value ?? 0) || 0) * multiplier,
         scope: mod?.scope ?? "all",
         attribute: mod?.attribute ?? "",
         skill: mod?.skill ?? "",
         stacks: isStacking ? clampedStacks : null,
-        stackLabel
+        stackLabel,
+        type: "condition"
       }));
     }).filter(mod => {
       if (mod.scope === "all") return true;
       if (mod.scope === "attribute") {
-        return !!attributeId && !skillId && mod.attribute === attributeId;
+        return !!attributeId && mod.attribute === attributeId;
       }
       if (mod.scope === "skill") {
         return !!skillId && mod.skill === skillId;
@@ -89,25 +92,36 @@ export function initYZECoreAPI() {
           value: Number(mod?.value ?? 0) || 0,
           scope: mod?.scope ?? "all",
           attribute: mod?.attribute ?? "",
-          skill: mod?.skill ?? ""
+          skill: mod?.skill ?? "",
+          type: "item",
+          itemType: item.type ?? "gear"
         }));
       })
       .filter(mod => {
         if (mod.scope === "all") return true;
-        if (mod.scope === "attribute") {
-          return !!attributeId && !skillId && mod.attribute === attributeId;
-        }
+      if (mod.scope === "attribute") {
+        return !!attributeId && mod.attribute === attributeId;
+      }
         if (mod.scope === "skill") {
           return !!skillId && mod.skill === skillId;
         }
         return false;
       });
 
+    const configModifiers = Array.isArray(config.modifiers)
+      ? config.modifiers.map(mod => ({
+        ...mod,
+        source: mod?.source ?? "Modifier",
+        value: Number(mod?.value ?? 0) || 0,
+        type: "config"
+      }))
+      : [];
+
     const modifiers = [
       ...actorModifiers,
       ...conditionModifiers,
       ...itemModifiers,
-      ...(Array.isArray(config.modifiers) ? config.modifiers : [])
+      ...configModifiers
     ];
 
     let attrValue = 0;
@@ -162,6 +176,7 @@ export function initYZECoreAPI() {
 
     const parts = [`Base ${Number(dicePool.base ?? 0)}`];
     const grouped = new Map();
+    const conditionTotals = new Map();
     for (const mod of dicePool.modifiers ?? []) {
       const value = Number(mod?.value ?? 0) || 0;
       if (!value) continue;
@@ -174,6 +189,11 @@ export function initYZECoreAPI() {
       const entry = grouped.get(key) ?? { source, stacks, stackLabel, total: 0 };
       entry.total += value;
       grouped.set(key, entry);
+      if (mod?.type === "condition") {
+        const condKey = mod?.conditionId ?? source;
+        const condEntry = conditionTotals.get(condKey) ?? 0;
+        conditionTotals.set(condKey, condEntry + value);
+      }
     }
     for (const entry of grouped.values()) {
       if (!entry.total) continue;
@@ -183,6 +203,74 @@ export function initYZECoreAPI() {
     }
     parts.push(`= ${dicePool.total}`);
     dicePool.breakdown = parts.join(" ");
+    dicePool.conditionLines = conditionDefs
+      .filter(def => {
+        const state = conditionFlags?.[def.id] ?? {};
+        return !!state.enabled;
+      })
+      .map(def => {
+        const state = conditionFlags?.[def.id] ?? {};
+        const stacks = Number(state.stacks ?? 1) || 1;
+        const maxStacks = Number(def.maxStacks ?? 3) || 3;
+        const clampedStacks = Math.max(1, Math.min(maxStacks, stacks));
+        const total = Number(conditionTotals.get(def.id) ?? 0) || 0;
+        const sign = total >= 0 ? "+" : "-";
+        const stackLabel = def.stacks && clampedStacks > 1 ? ` (x${clampedStacks})` : "";
+        return `${def.name ?? def.id}${stackLabel}: ${sign}${Math.abs(total)}`;
+      });
+
+    const formatTotals = totals => totals
+      .map(({ source, total }) => {
+        const sign = total >= 0 ? "+" : "-";
+        return `${source} ${sign}${Math.abs(total)}`;
+      })
+      .join("; ");
+
+    const groupBySource = mods => {
+      const map = new Map();
+      for (const mod of mods) {
+        const value = Number(mod?.value ?? 0) || 0;
+        if (!value) continue;
+        const source = (mod?.source && String(mod.source).trim()) ? String(mod.source).trim() : "Modifier";
+        map.set(source, (map.get(source) ?? 0) + value);
+      }
+      return Array.from(map.entries()).map(([source, total]) => ({ source, total }));
+    };
+
+    const gearTotals = groupBySource(
+      (dicePool.modifiers ?? []).filter(mod => mod?.type === "item" && mod?.itemType === "gear")
+    );
+    const talentTotals = groupBySource(
+      (dicePool.modifiers ?? []).filter(mod => mod?.type === "item" && mod?.itemType === "talent")
+    );
+    const genericTotals = groupBySource(
+      (dicePool.modifiers ?? []).filter(mod => mod?.type === "manual" || mod?.type === "config")
+    );
+
+    const attrName = setting?.attributes?.find(a => a.id === attributeId)?.name ?? attributeId ?? "";
+    const skillName = setting?.skills?.find(s => s.id === skillId)?.name ?? skillId ?? "";
+
+    const summaryLines = [];
+    if (attributeId) {
+      summaryLines.push(`Attribute: ${attrName} ${Number(attrValue ?? 0)}`);
+    }
+    if (skillId) {
+      summaryLines.push(`Skill: ${skillName} ${Number(skillValue ?? 0)}`);
+    }
+    if (gearTotals.length) {
+      summaryLines.push(`Gear: ${formatTotals(gearTotals)}`);
+    }
+    if (talentTotals.length) {
+      summaryLines.push(`Talents: ${formatTotals(talentTotals)}`);
+    }
+    if (dicePool.conditionLines?.length) {
+      summaryLines.push(`Conditions: ${dicePool.conditionLines.join("; ")}`);
+    }
+    if (genericTotals.length) {
+      summaryLines.push(`Modifiers: ${formatTotals(genericTotals)}`);
+    }
+
+    dicePool.summaryLines = summaryLines;
 
     return dicePool;
   };

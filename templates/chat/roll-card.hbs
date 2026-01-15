@@ -4,9 +4,19 @@
     <div>PUSHED</div>
   {{/if}}
   <div>{{actorName}}</div>
+  {{#if rollState.dicePool.summaryLines}}
+    {{#each rollState.dicePool.summaryLines}}
+      <div>{{this}}</div>
+    {{/each}}
+  {{/if}}
   <div>Dice Pool: {{diceCount}}</div>
   {{#if rollState.dicePool.breakdown}}
     <div>Breakdown: {{rollState.dicePool.breakdown}}</div>
+  {{/if}}
+  {{#if rollState.dicePool.conditionLines}}
+    {{#each rollState.dicePool.conditionLines}}
+      <div>{{this}}</div>
+    {{/each}}
   {{/if}}
   <ul>
     {{#each dice}}

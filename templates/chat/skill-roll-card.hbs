@@ -4,14 +4,19 @@
     <div>PUSHED</div>
   {{/if}}
   <div>{{actorName}}</div>
-  <div>{{attrName}}: {{attrValue}}</div>
-  <div>{{skillName}}: {{skillValue}}</div>
-  {{#if hasMod}}
-    <div>Mod: {{mod}}</div>
+  {{#if rollState.dicePool.summaryLines}}
+    {{#each rollState.dicePool.summaryLines}}
+      <div>{{this}}</div>
+    {{/each}}
   {{/if}}
   <div>Total Dice: {{totalDice}}</div>
   {{#if rollState.dicePool.breakdown}}
     <div>Breakdown: {{rollState.dicePool.breakdown}}</div>
+  {{/if}}
+  {{#if rollState.dicePool.conditionLines}}
+    {{#each rollState.dicePool.conditionLines}}
+      <div>{{this}}</div>
+    {{/each}}
   {{/if}}
   <div>Attribute Dice:</div>
   <ul>
