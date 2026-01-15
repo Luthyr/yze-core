@@ -70,17 +70,18 @@ export async function pushRoll(message, opts = {}) {
   let modDice = [];
 
   if (rollState.rollType === "attribute") {
-    const diceCount = Number(rollState.pool?.diceCount);
-    const mod = Number(rollState.pool?.mod ?? 0) || 0;
-    const attrCount = Number.isFinite(diceCount) ? diceCount - mod : NaN;
+    const baseCount = Number(rollState.dicePool?.base);
+    const totalCount = Number(rollState.dicePool?.total);
 
     if (
-      Number.isFinite(attrCount) &&
-      attrCount >= 0 &&
-      attrCount <= updatedDice.length
+      Number.isFinite(baseCount) &&
+      Number.isFinite(totalCount) &&
+      baseCount >= 0 &&
+      totalCount >= baseCount &&
+      totalCount <= updatedDice.length
     ) {
-      attributeDice = updatedDice.slice(0, attrCount);
-      modDice = mod !== 0 ? updatedDice.slice(attrCount) : [];
+      attributeDice = updatedDice.slice(0, baseCount);
+      modDice = updatedDice.slice(baseCount);
     } else {
       attributeDice = [];
       skillDice = [];
@@ -89,7 +90,9 @@ export async function pushRoll(message, opts = {}) {
   } else if (rollState.rollType === "skill") {
     const attrValue = Number(rollState.pool?.attrValue);
     const skillValue = Number(rollState.pool?.skillValue);
-    const splitCount = attrValue + skillValue;
+    const splitCount = Number.isFinite(rollState.dicePool?.base)
+      ? Number(rollState.dicePool.base)
+      : attrValue + skillValue;
 
     if (
       Number.isFinite(attrValue) &&
@@ -130,12 +133,13 @@ export async function pushRoll(message, opts = {}) {
   let templateData = {
     title,
     actorName,
-    diceCount: updatedRollState.pool?.diceCount ?? updatedDice.length,
+    diceCount: updatedRollState.dicePool?.total ?? updatedDice.length,
     dice: updatedDice,
     successes,
     pushed: true,
     messageId: targetMessage.id,
-    rollState: updatedRollState
+    rollState: updatedRollState,
+    dicePool: updatedRollState.dicePool
   };
 
   if (rollState.rollType === "skill") {
@@ -159,15 +163,18 @@ export async function pushRoll(message, opts = {}) {
       skillName,
       skillValue: updatedRollState.pool?.skillValue ?? 0,
       mod,
-      totalDice: updatedRollState.pool?.totalDice ?? updatedDice.length,
+      totalDice: updatedRollState.dicePool?.total ?? updatedDice.length,
       attributeDice,
       skillDice,
       modDice,
       successes,
-      hasMod: mod !== 0,
+      hasMod: (updatedRollState.dicePool?.modifiers ?? []).some(
+        m => (Number(m?.value ?? 0) || 0) !== 0
+      ),
       pushed: true,
       messageId: targetMessage.id,
-      rollState: updatedRollState
+      rollState: updatedRollState,
+      dicePool: updatedRollState.dicePool
     };
   }
 

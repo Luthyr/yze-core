@@ -27,6 +27,81 @@ export function initYZECoreAPI() {
     return config;
   };
 
+  game.yzecore.buildDicePool = (actor, config = {}) => {
+    if (!actor) {
+      ui.notifications.error("YZE Core | buildDicePool: actor is required.");
+      throw new Error("buildDicePool: actor is required");
+    }
+
+    const attributeId = config.attribute;
+    const skillId = config.skill;
+    const baseOverride = config.baseOverride;
+    const modifiers = Array.isArray(config.modifiers) ? [...config.modifiers] : [];
+
+    let attrValue = 0;
+    let skillValue = 0;
+
+    if (!Number.isFinite(baseOverride)) {
+      if (!attributeId || typeof attributeId !== "string") {
+        ui.notifications.error("YZE Core | buildDicePool: attribute is required.");
+        throw new Error("buildDicePool: attribute is required");
+      }
+
+      const attrPath = `system.attributes.${attributeId}.value`;
+      attrValue = foundry.utils.getProperty(actor, attrPath);
+      if (typeof attrValue !== "number" || Number.isNaN(attrValue)) {
+        ui.notifications.error(
+          `YZE Core | buildDicePool: ${actor.name} is missing a numeric attribute value at ${attrPath}`
+        );
+        throw new Error(`buildDicePool: invalid attribute value at ${attrPath}`);
+      }
+
+      if (skillId) {
+        const skillPath = `system.skills.${skillId}.value`;
+        skillValue = foundry.utils.getProperty(actor, skillPath);
+        if (typeof skillValue !== "number" || Number.isNaN(skillValue)) {
+          ui.notifications.error(
+            `YZE Core | buildDicePool: ${actor.name} is missing a numeric skill value at ${skillPath}`
+          );
+          throw new Error(`buildDicePool: invalid skill value at ${skillPath}`);
+        }
+      }
+    }
+
+    const base = Number.isFinite(baseOverride)
+      ? Number(baseOverride)
+      : Number(attrValue) + Number(skillValue);
+
+    const dicePool = {
+      base,
+      modifiers,
+      total: base,
+      breakdown: ""
+    };
+
+    Hooks.call("yzeCoreBuildDicePool", actor, dicePool);
+
+    const modifierTotal = (dicePool.modifiers ?? []).reduce((sum, mod) => {
+      const value = Number(mod?.value ?? 0) || 0;
+      return sum + value;
+    }, 0);
+
+    dicePool.total = Math.max(0, Number(dicePool.base ?? 0) + modifierTotal);
+
+    const parts = [`Base ${Number(dicePool.base ?? 0)}`];
+    for (const mod of dicePool.modifiers ?? []) {
+      const value = Number(mod?.value ?? 0) || 0;
+      if (!value) continue;
+      const sign = value >= 0 ? "+" : "-";
+      const label = mod?.source ? ` ${mod.source}` : "";
+      parts.push(`${sign}${label} ${Math.abs(value)}`);
+    }
+    parts.push(`= ${dicePool.total}`);
+    dicePool.breakdown = parts.join(" ");
+
+    return dicePool;
+  };
+
   game.yzecore.activateSetting = async id => {
     const setting = game.yzecore.settings?.[id];
     if (!setting) {

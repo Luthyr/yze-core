@@ -31,8 +31,15 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     throw new Error(`rollAttribute: invalid attribute value at ${attrPath}`);
   }
 
-  const mod = Number(opts.mod ?? 0) || 0;
-  const diceCount = Math.max(0, attrValue + mod);
+  const modifiers = Array.isArray(opts.modifiers) ? opts.modifiers : [];
+  if (Number.isFinite(opts.mod)) {
+    modifiers.push({ source: "Modifier", value: Number(opts.mod) });
+  }
+  const dicePool = game.yzecore.buildDicePool(actor, {
+    attribute: attrId,
+    modifiers
+  });
+  const diceCount = dicePool.total;
 
   // Roll dice (async evaluate in v13)
   const rollResult = await rollD6Pool(diceCount);
@@ -53,7 +60,8 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     actorUuid: actor.uuid,
     rollType: "attribute",
     title,
-    pool: { attrId, diceCount, mod },
+    pool: { attrId, attrValue },
+    dicePool,
     results: { dice: [...rollResult.dice], successes: rollResult.successes },
     pushed: false,
     pushable: true,
@@ -86,7 +94,8 @@ export async function rollAttribute(actor, attrId, opts = {}) {
     successes: rollResult.successes,
     pushed: false,
     messageId: message.id,
-    rollState
+    rollState,
+    dicePool
   };
 
   const html = await foundry.applications.handlebars.renderTemplate(

@@ -5,6 +5,9 @@
   {{/if}}
   <div>{{actorName}}</div>
   <div>Dice Pool: {{diceCount}}</div>
+  {{#if rollState.dicePool.breakdown}}
+    <div>Breakdown: {{rollState.dicePool.breakdown}}</div>
+  {{/if}}
   <ul>
     {{#each dice}}
       <li>{{this}}</li>

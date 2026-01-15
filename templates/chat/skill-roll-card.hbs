@@ -10,6 +10,9 @@
     <div>Mod: {{mod}}</div>
   {{/if}}
   <div>Total Dice: {{totalDice}}</div>
+  {{#if rollState.dicePool.breakdown}}
+    <div>Breakdown: {{rollState.dicePool.breakdown}}</div>
+  {{/if}}
   <div>Attribute Dice:</div>
   <ul>
     {{#each attributeDice}}

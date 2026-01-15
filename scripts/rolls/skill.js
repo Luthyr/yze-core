@@ -43,8 +43,16 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     throw new Error(`rollSkill: invalid skill value at ${skillPath}`);
   }
 
-  const mod = Number(opts.mod ?? 0) || 0;
-  const totalDice = Math.max(0, attrValue + skillValue + mod);
+  const modifiers = Array.isArray(opts.modifiers) ? opts.modifiers : [];
+  if (Number.isFinite(opts.mod)) {
+    modifiers.push({ source: "Modifier", value: Number(opts.mod) });
+  }
+  const dicePool = game.yzecore.buildDicePool(actor, {
+    attribute: attrId,
+    skill: skillId,
+    modifiers
+  });
+  const totalDice = dicePool.total;
 
   const roll = await new Roll(`${totalDice}d6`).evaluate();
   const dice = roll.dice?.[0]?.results?.map(result => result.result) ?? [];
@@ -52,7 +60,7 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
 
   const attributeDice = dice.slice(0, attrValue);
   const skillDice = dice.slice(attrValue, attrValue + skillValue);
-  const modDice = mod !== 0 ? dice.slice(attrValue + skillValue) : [];
+  const modDice = dice.slice(attrValue + skillValue);
 
   const cfg = game.yzecore?.config;
   const attrName =
@@ -77,9 +85,9 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
       skillId,
       attrValue,
       skillValue,
-      mod,
       totalDice
     },
+    dicePool,
     results: {
       attributeDice: [...attributeDice],
       skillDice: [...skillDice],
@@ -116,16 +124,17 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     skillId,
     skillName,
     skillValue,
-    mod,
+    mod: Number(opts.mod ?? 0) || 0,
     totalDice,
     attributeDice,
     skillDice,
     modDice,
     successes,
-    hasMod: mod !== 0,
+    hasMod: modifiers.some(m => (Number(m?.value ?? 0) || 0) !== 0),
     pushed: false,
     messageId: message.id,
-    rollState
+    rollState,
+    dicePool
   };
 
   const html = await foundry.applications.handlebars.renderTemplate(
