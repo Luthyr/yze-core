@@ -52,16 +52,15 @@
   border: 1px solid #333;
   border-radius: 4px;
   font-weight: 600;
+  color: #fff !important;
 }
 
 .yze-setting-switcher .yze-btn-activate {
-  background: #1f7a3a;
-  color: #fff;
-  border-color: #165a2b;
+  background: #1f7a3a !important;
+  border-color: #165a2b !important;
 }
 
 .yze-setting-switcher .yze-btn-deactivate {
-  background: #8a2f2f;
-  color: #fff;
-  border-color: #6b2424;
+  background: #8a2f2f !important;
+  border-color: #6b2424 !important;
 }
