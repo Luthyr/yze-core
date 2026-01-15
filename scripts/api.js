@@ -302,6 +302,7 @@ export function initYZECoreAPI() {
 
   game.yzecore.initializeActor = async (actor, { overwrite = false } = {}) => {
     if (!actor) return null;
+    if (actor.type !== "character") return null;
     const setting = game.yzecore.getActiveSetting?.();
     if (!setting) {
       ui.notifications.warn("YZE Core | initializeActor: no active setting.");

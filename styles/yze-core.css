@@ -412,3 +412,39 @@
   gap: 6px;
   align-items: center;
 }
+
+.yze-npc-sheet {
+  font-family: "IM Fell English", "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  color: #1f170f;
+  background: linear-gradient(180deg, #f5f0e8 0%, #efe6d8 100%);
+  border: 1px solid #c7b9a1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  padding: 12px;
+}
+
+.yze-npc-sheet .yze-block {
+  margin-bottom: 14px;
+}
+
+.yze-npc-pool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.yze-npc-pool-row {
+  display: grid;
+  grid-template-columns: 1fr 80px auto auto auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.yze-npc-pool-row .yze-input-dice {
+  text-align: center;
+}
+
+.yze-npc-roll-card ul {
+  margin: 6px 0;
+  padding-left: 16px;
+}

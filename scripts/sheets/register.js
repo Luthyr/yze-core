@@ -1,4 +1,5 @@
 import { YZECoreActorSheetV2 } from "./actor-sheet.js";
+import { YZECoreNpcSheetV2 } from "./npc-sheet.js";
 import { YZECoreItemSheetV2 } from "./item-sheet.js";
 
 export function registerSheets() {
@@ -8,6 +9,11 @@ export function registerSheets() {
     types: ["character"],
     makeDefault: true,
     label: "YZE Core Actor Sheet"
+  });
+  Actors.registerSheet("yze-core", YZECoreNpcSheetV2, {
+    types: ["npc"],
+    makeDefault: true,
+    label: "YZE Core NPC Sheet"
   });
 
   Items.unregisterSheet("core", ItemSheet);

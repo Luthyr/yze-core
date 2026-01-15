@@ -4,6 +4,8 @@ Core game module for the YZE game system.
 Notes:
 - Sheet registration is centralized in `scripts/sheets/register.js` and called during the `init` hook.
 
+// YZE Core v0.11.0
+// Stable: actor and item sheet upgrades
 
 // YZE Core v0.10.0
 // Stable: item modifiers

@@ -1,0 +1,86 @@
+<section class="yze-npc-sheet yze-sheet">
+  <header class="yze-header">
+    <h2 class="npc-name">
+      <input type="text"
+             name="name"
+             value="{{actor.name}}"
+             {{#unless @root.editable}}disabled{{/unless}} />
+    </h2>
+  </header>
+
+  <section class="yze-block">
+    <h3>Description</h3>
+    <textarea name="system.description" rows="4">{{system.description}}</textarea>
+  </section>
+
+  <section class="yze-block">
+    <h3>Notes</h3>
+    <textarea name="system.notes" rows="4">{{system.notes}}</textarea>
+  </section>
+
+  <section class="yze-block">
+    <h3>Dice Pools</h3>
+    <div class="yze-npc-pool-list">
+      {{#each pools as |pool|}}
+        <div class="yze-row yze-npc-pool-row" data-pool-id="{{pool.id}}">
+          <input type="text"
+                 class="yze-input"
+                 data-action="editPool"
+                 data-field="name"
+                 data-id="{{pool.id}}"
+                 value="{{pool.name}}"
+                 {{#unless @root.editable}}disabled{{/unless}} />
+
+          <input type="number"
+                 class="yze-input yze-input-dice"
+                 data-action="editPool"
+                 data-field="dice"
+                 data-id="{{pool.id}}"
+                 value="{{pool.dice}}"
+                 min="0"
+                 step="1"
+                 {{#unless @root.editable}}disabled{{/unless}} />
+
+          <button type="button"
+                  class="yze-roll"
+                  data-action="rollPool"
+                  data-id="{{pool.id}}">
+            Roll
+          </button>
+
+          {{#if pool.canPush}}
+            <button type="button"
+                    class="yze-roll"
+                    data-action="pushPool"
+                    data-id="{{pool.id}}">
+              Push
+            </button>
+          {{/if}}
+
+          <label class="yze-checkbox">
+            <input type="checkbox"
+                   data-action="editPool"
+                   data-field="canPush"
+                   data-id="{{pool.id}}"
+                   {{#if pool.canPush}}checked{{/if}}
+                   {{#unless @root.editable}}disabled{{/unless}} />
+            Can Push
+          </label>
+
+          <button type="button"
+                  data-action="removePool"
+                  data-id="{{pool.id}}"
+                  {{#unless @root.editable}}disabled{{/unless}}>
+            Remove
+          </button>
+        </div>
+      {{/each}}
+    </div>
+
+    <button type="button"
+            data-action="addPool"
+            {{#unless @root.editable}}disabled{{/unless}}>
+      + Add Pool
+    </button>
+  </section>
+</section>
