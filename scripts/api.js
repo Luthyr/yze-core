@@ -59,13 +59,15 @@ export function initYZECoreAPI() {
         ? (Array.isArray(def.modifiersPerStack) ? def.modifiersPerStack : [])
         : (Array.isArray(def.modifiers) ? def.modifiers : []);
       const multiplier = isStacking ? clampedStacks : 1;
+      const stackLabel = isStacking ? `(x${clampedStacks})` : "";
       return mods.map(mod => ({
         source: def.name ?? def.id,
         value: (Number(mod?.value ?? 0) || 0) * multiplier,
         scope: mod?.scope ?? "all",
         attribute: mod?.attribute ?? "",
         skill: mod?.skill ?? "",
-        stacks: isStacking ? clampedStacks : null
+        stacks: isStacking ? clampedStacks : null,
+        stackLabel
       }));
     }).filter(mod => {
       if (mod.scope === "all") return true;
@@ -165,16 +167,19 @@ export function initYZECoreAPI() {
       if (!value) continue;
       const source = (mod?.source && String(mod.source).trim()) ? String(mod.source).trim() : "Modifier";
       const stacks = Number(mod?.stacks ?? 0) || 0;
-      const key = `${source}::${stacks}`;
-      const entry = grouped.get(key) ?? { source, stacks, total: 0 };
+      const stackLabel = (mod?.stackLabel && String(mod.stackLabel).trim())
+        ? String(mod.stackLabel).trim()
+        : (stacks ? `(x${stacks})` : "");
+      const key = `${source}::${stackLabel}`;
+      const entry = grouped.get(key) ?? { source, stacks, stackLabel, total: 0 };
       entry.total += value;
       grouped.set(key, entry);
     }
     for (const entry of grouped.values()) {
       if (!entry.total) continue;
       const sign = entry.total >= 0 ? "+" : "-";
-      const stackLabel = entry.stacks ? ` (x${entry.stacks})` : "";
-      parts.push(`${sign} ${entry.source}${stackLabel} ${Math.abs(entry.total)}`);
+      const suffix = entry.stackLabel ? ` ${entry.stackLabel}` : "";
+      parts.push(`${sign} ${entry.source}${suffix} ${Math.abs(entry.total)}`);
     }
     parts.push(`= ${dicePool.total}`);
     dicePool.breakdown = parts.join(" ");
