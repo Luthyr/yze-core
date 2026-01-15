@@ -42,7 +42,11 @@ Hooks.once("ready", async () => {
   }
 });
 
-Hooks.on("yzeCoreSettingActivated", () => {
+Hooks.on("yzeCoreSettingActivated", async () => {
+  for (const actor of game.actors.contents) {
+    await game.yzecore.initializeActor(actor);
+  }
+
   // Re-render any open actor sheets so they pick up the new context
   for (const app of Object.values(ui.windows)) {
     if (app?.document instanceof Actor && app.rendered) {
@@ -51,6 +55,10 @@ Hooks.on("yzeCoreSettingActivated", () => {
       app.render({ force: true });
     }
   }
+});
+
+Hooks.on("createActor", async actor => {
+  await game.yzecore.initializeActor(actor);
 });
 
 Hooks.on("yzeCoreSettingDeactivated", () => {

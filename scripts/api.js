@@ -48,6 +48,57 @@ export function initYZECoreAPI() {
     Hooks.callAll("yzeCoreSettingDeactivated", { id: deactivatedId });
   };
 
+  game.yzecore.initializeActor = async (actor, { overwrite = false } = {}) => {
+    if (!actor) return null;
+    const setting = game.yzecore.getActiveSetting?.();
+    if (!setting) {
+      ui.notifications.warn("YZE Core | initializeActor: no active setting.");
+      return null;
+    }
+
+    const updateData = {};
+    const setIfMissing = (path, value) => {
+      const hasValue = foundry.utils.hasProperty(actor, path);
+      if (overwrite || !hasValue) {
+        foundry.utils.setProperty(updateData, path, value);
+      }
+    };
+
+    for (const attr of setting.attributes ?? []) {
+      const value = Number(attr.default ?? 0) || 0;
+      setIfMissing(`system.attributes.${attr.id}.value`, value);
+    }
+
+    for (const skill of setting.skills ?? []) {
+      const value = Number(skill.default ?? 0) || 0;
+      setIfMissing(`system.skills.${skill.id}.value`, value);
+    }
+
+    const resources = setting.resources ?? {};
+    for (const res of Object.values(resources)) {
+      if (!res?.path) continue;
+      const value = Number(res.default ?? 0) || 0;
+      setIfMissing(res.path, value);
+      if (res.maxPath) {
+        const maxValue = Number(res.maxDefault ?? 0) || 0;
+        setIfMissing(res.maxPath, maxValue);
+      }
+    }
+
+    if (!Object.keys(updateData).length) return null;
+    return actor.update(updateData);
+  };
+
+  game.yzecore.normalizeAllActors = async ({ overwrite = false } = {}) => {
+    if (!game.user?.isGM) {
+      ui.notifications.warn("YZE Core | normalizeAllActors: GM only.");
+      return;
+    }
+    for (const actor of game.actors.contents) {
+      await game.yzecore.initializeActor(actor, { overwrite });
+    }
+  };
+
   game.yzecore.getActiveSetting = () => game.yzecore.config ?? null;
   game.yzecore.pushLastRoll = async () => {
     const msg = game.messages.contents
