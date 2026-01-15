@@ -217,7 +217,7 @@ export function initYZECoreAPI() {
         if (!total) return null;
         const sign = total >= 0 ? "+" : "-";
         const stackLabel = def.stacks && clampedStacks > 1 ? ` (x${clampedStacks})` : "";
-        return `${def.name ?? def.id}${stackLabel}: ${sign}${Math.abs(total)}`;
+        return `${def.name ?? def.id}${stackLabel} ${sign}${Math.abs(total)}`;
       })
       .filter(Boolean);
 
@@ -263,10 +263,12 @@ export function initYZECoreAPI() {
       summaryLines.push(`Gear: ${formatTotals(gearTotals)}`);
     }
     if (talentTotals.length) {
-      summaryLines.push(`Talents: ${formatTotals(talentTotals)}`);
+      const label = talentTotals.length > 1 ? "Talents" : "Talent";
+      summaryLines.push(`${label}: ${formatTotals(talentTotals)}`);
     }
     if (dicePool.conditionLines?.length) {
-      summaryLines.push(`Conditions: ${dicePool.conditionLines.join("; ")}`);
+      const label = dicePool.conditionLines.length > 1 ? "Conditions" : "Condition";
+      summaryLines.push(`${label}: ${dicePool.conditionLines.join(", ")}`);
     }
     if (genericTotals.length) {
       summaryLines.push(`Modifiers: ${formatTotals(genericTotals)}`);

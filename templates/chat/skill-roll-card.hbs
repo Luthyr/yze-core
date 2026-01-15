@@ -23,7 +23,7 @@
       <li>{{this}}</li>
     {{/each}}
   </ul>
-  {{#if hasMod}}
+  {{#if rollState.results.modDice.length}}
     <div>Mod Dice:</div>
     <ul>
       {{#each rollState.results.modDice}}
