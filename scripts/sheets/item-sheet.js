@@ -4,7 +4,7 @@ const { ItemSheetV2 } = foundry.applications.sheets;
 export class YZECoreItemSheetV2 extends HandlebarsApplicationMixin(ItemSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["yze-core", "sheet", "item"],
-    position: { width: 520, height: 520 },
+    position: { width: 620, height: 720 },
     window: { resizable: true, title: "YZE Core Item" }
   };
 
