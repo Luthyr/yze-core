@@ -7,7 +7,105 @@
   </header>
 
   <section class="sheet-section">
+    <label class="yze-field">
+      <input type="checkbox"
+             data-action="toggleItemEquipped"
+             {{#if system.equipped}}checked{{/if}} />
+      Equipped
+    </label>
+  </section>
+
+  <section class="sheet-section">
     <h2>Description</h2>
     <textarea name="system.description" rows="8">{{system.description}}</textarea>
+  </section>
+
+  <section class="sheet-section yze-modifiers yze-item-modifiers">
+    <h2>Modifiers</h2>
+    <div class="yze-modifier-list">
+      {{#each modifiers as |mod|}}
+        <div class="yze-row yze-modifier-row" data-modifier-id="{{mod.id}}">
+          <input type="number"
+                 class="yze-input"
+                 data-action="editItemModifier"
+                 data-field="value"
+                 data-id="{{mod.id}}"
+                 value="{{mod.value}}"
+                 step="1" />
+
+          <select data-action="editItemModifier"
+                  data-field="scope"
+                  data-id="{{mod.id}}">
+            <option value="all" {{#if (eq mod.scope "all")}}selected{{/if}}>All</option>
+            <option value="attribute" {{#if (eq mod.scope "attribute")}}selected{{/if}}>Attribute</option>
+            <option value="skill" {{#if (eq mod.scope "skill")}}selected{{/if}}>Skill</option>
+          </select>
+
+          {{#if (eq mod.scope "attribute")}}
+            {{#if @root.yze.hasActiveSetting}}
+              <select data-action="editItemModifier"
+                      data-field="attribute"
+                      data-id="{{mod.id}}">
+                <option value="">Attribute</option>
+                {{#each @root.attributeOptions as |attr|}}
+                  <option value="{{attr.id}}" {{#if (eq attr.id ../mod.attribute)}}selected{{/if}}>
+                    {{attr.name}}
+                  </option>
+                {{/each}}
+              </select>
+            {{else}}
+              <input type="text"
+                     class="yze-input"
+                     placeholder="Attribute id"
+                     data-action="editItemModifier"
+                     data-field="attribute"
+                     data-id="{{mod.id}}"
+                     value="{{mod.attribute}}" />
+            {{/if}}
+          {{/if}}
+
+          {{#if (eq mod.scope "skill")}}
+            {{#if @root.yze.hasActiveSetting}}
+              <select data-action="editItemModifier"
+                      data-field="skill"
+                      data-id="{{mod.id}}">
+                <option value="">Skill</option>
+                {{#each @root.skillOptions as |skill|}}
+                  <option value="{{skill.id}}" {{#if (eq skill.id ../mod.skill)}}selected{{/if}}>
+                    {{skill.name}}
+                  </option>
+                {{/each}}
+              </select>
+            {{else}}
+              <input type="text"
+                     class="yze-input"
+                     placeholder="Skill id"
+                     data-action="editItemModifier"
+                     data-field="skill"
+                     data-id="{{mod.id}}"
+                     value="{{mod.skill}}" />
+            {{/if}}
+          {{/if}}
+
+          <input type="text"
+                 class="yze-input"
+                 placeholder="Label (optional)"
+                 data-action="editItemModifier"
+                 data-field="label"
+                 data-id="{{mod.id}}"
+                 value="{{mod.label}}" />
+
+          <button type="button"
+                  data-action="removeItemModifier"
+                  data-id="{{mod.id}}">
+            Remove
+          </button>
+        </div>
+      {{/each}}
+    </div>
+
+    <button type="button" data-action="addItemModifier">
+      + Add Modifier
+    </button>
   </section>
 </section>

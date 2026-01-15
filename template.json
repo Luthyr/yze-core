@@ -12,10 +12,13 @@
     "types": ["gear", "talent"],
     "gear": {
       "bonusDice": 0,
-      "equipped": false
+      "equipped": false,
+      "modifiers": []
     },
     "talent": {
-      "rank": 1
+      "rank": 1,
+      "equipped": false,
+      "modifiers": []
     }
   }
 }

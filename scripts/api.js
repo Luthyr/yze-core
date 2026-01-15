@@ -43,8 +43,32 @@ export function initYZECoreAPI() {
         value: Number(mod.value ?? 0) || 0
       }));
 
+    const itemModifiers = (actor.items?.contents ?? [])
+      .filter(item => item?.system?.equipped)
+      .flatMap(item => {
+        const mods = Array.isArray(item.system?.modifiers) ? item.system.modifiers : [];
+        return mods.map(mod => ({
+          source: (mod?.label && String(mod.label).trim()) ? String(mod.label) : item.name,
+          value: Number(mod?.value ?? 0) || 0,
+          scope: mod?.scope ?? "all",
+          attribute: mod?.attribute ?? "",
+          skill: mod?.skill ?? ""
+        }));
+      })
+      .filter(mod => {
+        if (mod.scope === "all") return true;
+        if (mod.scope === "attribute") {
+          return !!attributeId && !skillId && mod.attribute === attributeId;
+        }
+        if (mod.scope === "skill") {
+          return !!skillId && mod.skill === skillId;
+        }
+        return false;
+      });
+
     const modifiers = [
       ...actorModifiers,
+      ...itemModifiers,
       ...(Array.isArray(config.modifiers) ? config.modifiers : [])
     ];
 

@@ -78,6 +78,40 @@
       </button>
     </section>
 
+    {{!-- ITEMS --}}
+    <section class="yze-block yze-items">
+      <h3>Items</h3>
+      {{#if items.length}}
+        <div class="yze-item-list">
+          {{#each items as |item|}}
+            <div class="yze-row yze-item-row" data-item-id="{{item.id}}">
+              <input type="checkbox"
+                     data-action="toggleItemEquipped"
+                     data-item-id="{{item.id}}"
+                     {{#if item.equipped}}checked{{/if}}
+                     {{#unless @root.editable}}disabled{{/unless}} />
+
+              <span class="yze-label">{{item.name}}</span>
+
+              <button type="button"
+                      data-action="editItem"
+                      data-item-id="{{item.id}}">
+                Edit
+              </button>
+            </div>
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="hint">No items yet.</p>
+      {{/if}}
+
+      <button type="button"
+              data-action="createItem"
+              {{#unless @root.editable}}disabled{{/unless}}>
+        + New Item
+      </button>
+    </section>
+
     {{!-- ATTRIBUTES --}}
     <section class="yze-block">
       <h3>Attributes</h3>

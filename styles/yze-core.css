@@ -86,3 +86,31 @@
 .yze-modifiers button {
   padding: 4px 10px;
 }
+
+.yze-items .yze-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.yze-items .yze-item-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.yze-item-sheet .yze-field {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.yze-item-modifiers .yze-modifier-row {
+  grid-template-columns: 80px 120px 1fr 1fr 1fr auto;
+}
+
+.yze-item-modifiers .yze-input {
+  width: 100%;
+}

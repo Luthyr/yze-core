@@ -54,6 +54,18 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     root.querySelectorAll("[data-action='editModifier']").forEach(el => {
       el.addEventListener("change", event => this._onEditModifier(event));
     });
+
+    root.querySelectorAll("[data-action='toggleItemEquipped']").forEach(el => {
+      el.addEventListener("change", event => this._onToggleItemEquipped(event));
+    });
+
+    root.querySelectorAll("[data-action='createItem']").forEach(el => {
+      el.addEventListener("click", event => this._onCreateItem(event));
+    });
+
+    root.querySelectorAll("[data-action='editItem']").forEach(el => {
+      el.addEventListener("click", event => this._onEditItem(event));
+    });
   }
 
   _onRollAttr(event) {
@@ -120,6 +132,30 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     await this.document.update({ "flags.yze-core.modifiers": next });
   }
 
+  async _onToggleItemEquipped(event) {
+    const itemId = event.currentTarget?.dataset?.itemId;
+    if (!itemId) return;
+    const item = this.document.items?.get(itemId);
+    if (!item) return;
+    await item.update({ "system.equipped": !!event.currentTarget.checked });
+  }
+
+  async _onCreateItem() {
+    const itemTypes = game.system.documentTypes?.Item ?? [];
+    const type = itemTypes[0] ?? "gear";
+    await this.document.createEmbeddedDocuments("Item", [
+      { name: "New Item", type }
+    ]);
+  }
+
+  async _onEditItem(event) {
+    const itemId = event.currentTarget?.dataset?.itemId;
+    if (!itemId) return;
+    const item = this.document.items?.get(itemId);
+    if (!item) return;
+    item.sheet?.render(true);
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
@@ -153,6 +189,12 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     context.editable = this.isEditable || this.document.isOwner;
     context.lastRoll = this.document.getFlag("yze-core", "lastRoll") ?? null;
     context.modifiers = this.document.getFlag("yze-core", "modifiers") ?? [];
+    context.items = (this.document.items?.contents ?? []).map(item => ({
+      id: item.id,
+      name: item.name,
+      type: item.type,
+      equipped: !!item.system?.equipped
+    }));
 
     // form footer buttons
     context.buttons = [
