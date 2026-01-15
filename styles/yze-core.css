@@ -544,3 +544,17 @@
   margin: 6px 0;
   padding-left: 16px;
 }
+.yze-npc-notes textarea,
+.yze-item-sheet textarea[name="system.description"] {
+  min-height: 120px;
+  border: 1px solid #8c7b65;
+  background: #fffdf8;
+  color: #1a140e;
+}
+
+.yze-npc-notes h3,
+.yze-item-sheet h2 {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: #1a140e;
+}
