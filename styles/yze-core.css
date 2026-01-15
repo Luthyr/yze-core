@@ -39,10 +39,6 @@
   color: #1f170f;
 }
 
-.yze-actor-sheet .yze-item-title input,
-.yze-npc-sheet .yze-item-title input {
-  font-size: 1.2em;
-}
 
 .yze-item-meta {
   display: flex;
