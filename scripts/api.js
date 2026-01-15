@@ -173,7 +173,7 @@ export function initYZECoreAPI() {
     for (const entry of grouped.values()) {
       if (!entry.total) continue;
       const sign = entry.total >= 0 ? "+" : "-";
-      const stackLabel = entry.stacks > 1 ? ` x${entry.stacks}` : "";
+      const stackLabel = entry.stacks ? ` (x${entry.stacks})` : "";
       parts.push(`${sign} ${entry.source}${stackLabel} ${Math.abs(entry.total)}`);
     }
     parts.push(`= ${dicePool.total}`);
