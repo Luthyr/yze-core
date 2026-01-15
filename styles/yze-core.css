@@ -435,6 +435,22 @@
   margin-bottom: 10px;
 }
 
+.yze-npc-header .npc-name input {
+  font-size: 1.8em;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.yze-npc-header .npc-subtitle textarea {
+  font-size: 0.9em;
+  background: transparent;
+  border: none;
+  padding: 4px 0 0;
+  color: #4a3a28;
+}
+
 .yze-npc-sheet input[type="text"],
 .yze-npc-sheet input[type="number"],
 .yze-npc-sheet textarea {
@@ -464,15 +480,73 @@
   margin-bottom: 8px;
 }
 
-.yze-npc-pool-row {
+.yze-npc-pool-card {
   display: grid;
-  grid-template-columns: 1fr 80px auto auto auto auto;
+  grid-template-columns: 1fr 64px auto auto auto auto;
   gap: 8px;
   align-items: center;
+  padding: 8px 10px;
+  background: #f9f2e6;
+  border: 1px solid #c7b9a1;
+  border-radius: 6px;
 }
 
-.yze-npc-pool-row .yze-input-dice {
+.yze-npc-pool-name {
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.yze-npc-pool-name:focus {
+  border: 1px solid #8c7b65;
+  background: #fffdf8;
+}
+
+.yze-npc-pool-dice {
+  font-size: 1.6em;
+  font-weight: 700;
   text-align: center;
+  border: none;
+  background: transparent;
+}
+
+.yze-npc-pool-dice:focus {
+  border: 1px solid #8c7b65;
+  background: #fffdf8;
+}
+
+.yze-npc-roll {
+  background: #2a2118;
+  color: #f5f0e8;
+  border: 1px solid #2a2118;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.yze-npc-push {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+}
+
+.yze-npc-push-button {
+  background: #ede2d1;
+}
+
+.yze-npc-remove {
+  background: transparent;
+  border: 1px dashed #8c7b65;
+  color: #6c5844;
+}
+
+.yze-npc-add {
+  background: #ede2d1;
+  font-weight: 700;
 }
 
 .yze-npc-roll-card ul {

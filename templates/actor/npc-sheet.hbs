@@ -1,30 +1,23 @@
 <section class="yze-npc-sheet yze-sheet">
-  <header class="yze-header">
+  <header class="yze-header yze-npc-header">
     <h2 class="npc-name">
       <input type="text"
              name="name"
              value="{{actor.name}}"
              {{#unless @root.editable}}disabled{{/unless}} />
     </h2>
+    <div class="npc-subtitle">
+      <textarea name="system.description" rows="2" placeholder="Short description">{{system.description}}</textarea>
+    </div>
   </header>
 
-  <section class="yze-block">
-    <h3>Description</h3>
-    <textarea name="system.description" rows="4">{{system.description}}</textarea>
-  </section>
-
-  <section class="yze-block">
-    <h3>Notes</h3>
-    <textarea name="system.notes" rows="4">{{system.notes}}</textarea>
-  </section>
-
-  <section class="yze-block">
+  <section class="yze-block yze-npc-pools">
     <h3>Dice Pools</h3>
     <div class="yze-npc-pool-list">
       {{#each pools as |pool|}}
-        <div class="yze-row yze-npc-pool-row" data-pool-id="{{pool.id}}">
+        <div class="yze-row yze-npc-pool-card" data-pool-id="{{pool.id}}">
           <input type="text"
-                 class="yze-input"
+                 class="yze-input yze-npc-pool-name"
                  data-action="editPool"
                  data-field="name"
                  data-id="{{pool.id}}"
@@ -32,7 +25,7 @@
                  {{#unless @root.editable}}disabled{{/unless}} />
 
           <input type="number"
-                 class="yze-input yze-input-dice"
+                 class="yze-input yze-npc-pool-dice"
                  data-action="editPool"
                  data-field="dice"
                  data-id="{{pool.id}}"
@@ -42,32 +35,33 @@
                  {{#unless @root.editable}}disabled{{/unless}} />
 
           <button type="button"
-                  class="yze-roll"
+                  class="yze-roll yze-npc-roll"
                   data-action="rollPool"
                   data-id="{{pool.id}}">
-            Roll
+            🎲 Roll
           </button>
 
-          {{#if pool.canPush}}
-            <button type="button"
-                    class="yze-roll"
-                    data-action="pushPool"
-                    data-id="{{pool.id}}">
-              Push
-            </button>
-          {{/if}}
-
-          <label class="yze-checkbox">
+          <label class="yze-npc-push">
             <input type="checkbox"
                    data-action="editPool"
                    data-field="canPush"
                    data-id="{{pool.id}}"
                    {{#if pool.canPush}}checked{{/if}}
                    {{#unless @root.editable}}disabled{{/unless}} />
-            Can Push
+            Push
           </label>
 
+          {{#if pool.canPush}}
+            <button type="button"
+                    class="yze-roll yze-npc-push-button"
+                    data-action="pushPool"
+                    data-id="{{pool.id}}">
+              Push
+            </button>
+          {{/if}}
+
           <button type="button"
+                  class="yze-npc-remove"
                   data-action="removePool"
                   data-id="{{pool.id}}"
                   {{#unless @root.editable}}disabled{{/unless}}>
@@ -78,9 +72,15 @@
     </div>
 
     <button type="button"
+            class="yze-npc-add"
             data-action="addPool"
             {{#unless @root.editable}}disabled{{/unless}}>
       + Add Pool
     </button>
+  </section>
+
+  <section class="yze-block yze-npc-notes">
+    <h3>Notes</h3>
+    <textarea name="system.notes" rows="4" placeholder="Notes">{{system.notes}}</textarea>
   </section>
 </section>
