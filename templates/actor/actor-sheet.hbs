@@ -1,17 +1,16 @@
 <section class="yze-actor-sheet yze-sheet">
 
-  <header class="yze-header">
-    <div class="yze-title">
-      <h2 class="actor-name">
-        <input type="text"
-               name="name"
-               value="{{actor.name}}"
-               {{#unless @root.editable}}disabled{{/unless}} />
-      </h2>
-      {{#if yze.hasActiveSetting}}
-        <p class="hint">Active setting: <strong>{{yze.activeSetting.name}}</strong> ({{yze.activeSetting.id}})</p>
-      {{/if}}
-    </div>
+  <header class="yze-header yze-item-header">
+    <div class="yze-item-type">Character</div>
+    <h2 class="yze-item-title actor-name">
+      <input type="text"
+             name="name"
+             value="{{actor.name}}"
+             {{#unless @root.editable}}disabled{{/unless}} />
+    </h2>
+    {{#if yze.hasActiveSetting}}
+      <p class="hint">Active setting: <strong>{{yze.activeSetting.name}}</strong> ({{yze.activeSetting.id}})</p>
+    {{/if}}
   </header>
 
   {{#if yze.hasActiveSetting}}
