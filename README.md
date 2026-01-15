@@ -4,7 +4,11 @@ Core game module for the YZE game system.
 Notes:
 - Sheet registration is centralized in `scripts/sheets/register.js` and called during the `init` hook.
 
-// YZE Core v0.7.0
+
+// YZE Core v0.9.0
+// Stable: setting switcher updates
+
+// YZE Core v0.8.0
 // Stable: push roll button
 
 // YZE Core v0.7.0
