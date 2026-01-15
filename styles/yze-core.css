@@ -131,22 +131,17 @@
   color: #1f170f;
 }
 
-.yze-attr-roll {
-  border: 1px solid #2a2118;
-  background: #ede2d1;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.7em;
-  padding: 2px 8px;
-  margin: 6px auto 0;
-  display: block;
-}
-
 .yze-attr-name {
   border: none;
   background: transparent;
   width: 100%;
   cursor: pointer;
+}
+
+.yze-attr-name:hover,
+.yze-skill-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .yze-skill-list {
@@ -167,19 +162,9 @@
 
 .yze-skill-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 8px;
   align-items: center;
-}
-
-.yze-skill-roll {
-  padding: 2px 8px;
-  border: 1px solid #2a2118;
-  background: #2a2118;
-  color: #f5f0e8;
-  font-size: 0.75em;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
 }
 
 .yze-skill-value {
@@ -258,18 +243,21 @@
   grid-template-columns: auto 1fr 80px auto;
 }
 
-.yze-items .yze-item-row {
+.yze-items .yze-item-row,
+.yze-talents .yze-item-row {
   grid-template-columns: auto 1fr auto;
 }
 
-.yze-items .yze-item-mods {
+.yze-items .yze-item-mods,
+.yze-talents .yze-item-mods {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin: 4px 0 6px 26px;
 }
 
-.yze-items .yze-item-mod {
+.yze-items .yze-item-mod,
+.yze-talents .yze-item-mod {
   font-size: 0.75em;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -372,14 +360,16 @@
   padding: 4px 10px;
 }
 
-.yze-items .yze-item-list {
+.yze-items .yze-item-list,
+.yze-talents .yze-item-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-bottom: 8px;
 }
 
-.yze-items .yze-item-row {
+.yze-items .yze-item-row,
+.yze-talents .yze-item-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 8px;

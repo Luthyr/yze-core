@@ -34,13 +34,6 @@
                          {{#unless @root.editable}}disabled{{/unless}} />
 
                   <button type="button"
-                          class="yze-roll yze-attr-roll"
-                          data-action="rollAttr"
-                          data-attr-id="{{attr.id}}">
-                    Roll
-                  </button>
-
-                  <button type="button"
                           class="yze-attr-name yze-attr-roll"
                           data-action="rollAttr"
                           data-attr-id="{{attr.id}}">
@@ -53,13 +46,6 @@
                   {{#each @root.skillsRendered as |skill|}}
                     {{#if (eq skill.attribute ../id)}}
                       <div class="yze-row yze-skill-row" data-skill="{{skill.id}}">
-                        <button type="button"
-                                class="yze-roll yze-skill-roll"
-                                data-action="rollSkill"
-                                data-skill-id="{{skill.id}}"
-                                data-attr-id="{{skill.attribute}}">
-                          Roll
-                        </button>
                         <button type="button"
                                 class="yze-label yze-skill-name"
                                 data-action="rollSkill"
