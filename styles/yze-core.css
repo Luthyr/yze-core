@@ -360,6 +360,10 @@
   padding: 4px 10px;
 }
 
+.yze-roll-separator {
+  margin: 6px 0;
+}
+
 .yze-items .yze-item-list,
 .yze-talents .yze-item-list {
   display: flex;

@@ -9,15 +9,8 @@
       <div>{{this}}</div>
     {{/each}}
   {{/if}}
+  <div class="yze-roll-separator"></div>
   <div>Total Dice: {{totalDice}}</div>
-  {{#if rollState.dicePool.breakdown}}
-    <div>Breakdown: {{rollState.dicePool.breakdown}}</div>
-  {{/if}}
-  {{#if rollState.dicePool.conditionLines}}
-    {{#each rollState.dicePool.conditionLines}}
-      <div>{{this}}</div>
-    {{/each}}
-  {{/if}}
   <div>Attribute Dice:</div>
   <ul>
     {{#each rollState.results.attributeDice}}
