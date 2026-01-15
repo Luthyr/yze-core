@@ -1,23 +1,18 @@
-<section class="yze-item-sheet">
-  <header class="sheet-header">
-    <h1>
+<section class="yze-item-sheet yze-sheet">
+  <header class="sheet-header yze-item-header">
+    <div class="yze-item-type">{{item.type}}</div>
+    <h1 class="yze-item-title">
       <input name="name" type="text" value="{{item.name}}" />
     </h1>
-    <div class="sheet-subtitle">{{item.type}}</div>
   </header>
 
-  <section class="sheet-section">
+  <section class="sheet-section yze-item-meta">
     <label class="yze-field">
       <input type="checkbox"
              data-action="toggleItemEquipped"
              {{#if system.equipped}}checked{{/if}} />
       Equipped
     </label>
-  </section>
-
-  <section class="sheet-section">
-    <h2>Description</h2>
-    <textarea name="system.description" rows="8">{{system.description}}</textarea>
   </section>
 
   <section class="sheet-section yze-modifiers yze-item-modifiers">
@@ -107,5 +102,10 @@
     <button type="button" data-action="addItemModifier">
       + Add Modifier
     </button>
+  </section>
+
+  <section class="sheet-section">
+    <h2>Description</h2>
+    <textarea name="system.description" rows="8">{{system.description}}</textarea>
   </section>
 </section>
