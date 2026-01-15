@@ -15,20 +15,20 @@
   {{/if}}
   <div>Attribute Dice:</div>
   <ul>
-    {{#each attributeDice}}
+    {{#each rollState.results.attributeDice}}
       <li>{{this}}</li>
     {{/each}}
   </ul>
   <div>Skill Dice:</div>
   <ul>
-    {{#each skillDice}}
+    {{#each rollState.results.skillDice}}
       <li>{{this}}</li>
     {{/each}}
   </ul>
   {{#if hasMod}}
     <div>Mod Dice:</div>
     <ul>
-      {{#each modDice}}
+      {{#each rollState.results.modDice}}
         <li>{{this}}</li>
       {{/each}}
     </ul>

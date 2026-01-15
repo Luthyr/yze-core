@@ -53,6 +53,10 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     modifiers
   });
   const totalDice = dicePool.total;
+  const modTotal = (dicePool.modifiers ?? []).reduce((sum, mod) => {
+    const value = Number(mod?.value ?? 0) || 0;
+    return sum + value;
+  }, 0);
 
   const roll = await new Roll(`${totalDice}d6`).evaluate();
   const dice = roll.dice?.[0]?.results?.map(result => result.result) ?? [];
@@ -85,7 +89,8 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
       skillId,
       attrValue,
       skillValue,
-      totalDice
+      totalDice,
+      mod: modTotal
     },
     dicePool,
     results: {
@@ -124,13 +129,13 @@ export async function rollSkill(actor, attrId, skillId, opts = {}) {
     skillId,
     skillName,
     skillValue,
-    mod: Number(opts.mod ?? 0) || 0,
+    mod: modTotal,
     totalDice,
     attributeDice,
     skillDice,
     modDice,
     successes,
-    hasMod: modifiers.some(m => (Number(m?.value ?? 0) || 0) !== 0),
+    hasMod: (dicePool.modifiers ?? []).some(m => (Number(m?.value ?? 0) || 0) !== 0),
     pushed: false,
     messageId: message.id,
     rollState,
