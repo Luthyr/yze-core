@@ -18,11 +18,11 @@
         <div class="yze-row">
           <div class="yze-label">{{s.name}} ({{s.id}})</div>
           {{#if s.isActive}}
-            <button type="button" data-action="deactivate" data-id="{{s.id}}">
+            <button type="button" class="yze-btn yze-btn-deactivate" data-action="deactivate" data-id="{{s.id}}">
               Deactivate
             </button>
           {{else}}
-            <button type="button" data-action="activate" data-id="{{s.id}}">
+            <button type="button" class="yze-btn yze-btn-activate" data-action="activate" data-id="{{s.id}}">
               Activate
             </button>
           {{/if}}

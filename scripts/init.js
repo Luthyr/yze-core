@@ -64,30 +64,34 @@ Hooks.on("yzeCoreSettingDeactivated", () => {
   }
 });
 
-Hooks.on("renderChatMessage", (message, html) => {
-  // Delegate within this message’s DOM
-  html.on("click", "button[data-action='yze-push']", async (event) => {
-    event.preventDefault();
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  const root = html instanceof HTMLElement ? html : html?.[0];
+  if (!root) return;
 
-    const msgId = event.currentTarget.dataset.messageId;
-    const msg = game.messages.get(msgId);
-    if (!msg) return ui.notifications.warn("YZE Core | Roll message not found.");
+  root.querySelectorAll("button[data-action='yze-push']").forEach(button => {
+    button.addEventListener("click", async event => {
+      event.preventDefault();
 
-    // Must have rollState
-    const rollState = msg.flags?.["yze-core"]?.rollState;
-    if (!rollState) return ui.notifications.warn("YZE Core | No rollState on message.");
+      const msgId = event.currentTarget.dataset.messageId;
+      const msg = game.messages.get(msgId);
+      if (!msg) return ui.notifications.warn("YZE Core | Roll message not found.");
 
-    // Optional: permission guard (only the roller or GM)
-    const authorId = rollState.authorId ?? msg.author?.id;
-    if (!(game.user.isGM || game.user.id === authorId)) {
-      return ui.notifications.warn("You can only push your own rolls.");
-    }
+      // Must have rollState
+      const rollState = msg.flags?.["yze-core"]?.rollState;
+      if (!rollState) return ui.notifications.warn("YZE Core | No rollState on message.");
 
-    try {
-      await game.yzecore.pushRoll(msg);
-    } catch (err) {
-      console.error(err);
-      ui.notifications.error(`YZE Core | Push failed: ${err.message ?? err}`);
-    }
+      // Optional: permission guard (only the roller or GM)
+      const authorId = rollState.authorId ?? msg.author?.id;
+      if (!(game.user.isGM || game.user.id === authorId)) {
+        return ui.notifications.warn("You can only push your own rolls.");
+      }
+
+      try {
+        await game.yzecore.pushRoll(msg);
+      } catch (err) {
+        console.error(err);
+        ui.notifications.error(`YZE Core | Push failed: ${err.message ?? err}`);
+      }
+    });
   });
 });

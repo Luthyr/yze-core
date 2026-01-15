@@ -46,3 +46,22 @@
   border: 1px dashed #888;
   color: #444;
 }
+
+.yze-setting-switcher .yze-btn {
+  padding: 4px 10px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.yze-setting-switcher .yze-btn-activate {
+  background: #1f7a3a;
+  color: #fff;
+  border-color: #165a2b;
+}
+
+.yze-setting-switcher .yze-btn-deactivate {
+  background: #8a2f2f;
+  color: #fff;
+  border-color: #6b2424;
+}
