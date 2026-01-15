@@ -78,6 +78,50 @@
       </button>
     </section>
 
+    {{!-- CONDITIONS --}}
+    <section class="yze-block yze-conditions">
+      <h3>Conditions</h3>
+      {{#if conditions.length}}
+        <div class="yze-condition-list">
+          {{#each conditions as |cond|}}
+            <div class="yze-row yze-condition-row" data-condition-id="{{cond.id}}">
+              <input type="checkbox"
+                     data-action="toggleCondition"
+                     data-id="{{cond.id}}"
+                     {{#if cond.enabled}}checked{{/if}}
+                     {{#unless @root.editable}}disabled{{/unless}} />
+
+              <span class="yze-label" title="{{cond.description}}">
+                {{cond.name}}
+              </span>
+
+              {{#if cond.stacks}}
+                <div class="yze-condition-stacks">
+                  <button type="button"
+                          data-action="adjustConditionStacks"
+                          data-id="{{cond.id}}"
+                          data-delta="-1"
+                          {{#unless @root.editable}}disabled{{/unless}}>
+                    -
+                  </button>
+                  <span class="yze-subtle">x{{cond.stacks}}</span>
+                  <button type="button"
+                          data-action="adjustConditionStacks"
+                          data-id="{{cond.id}}"
+                          data-delta="1"
+                          {{#unless @root.editable}}disabled{{/unless}}>
+                    +
+                  </button>
+                </div>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="hint">No conditions defined in the active setting.</p>
+      {{/if}}
+    </section>
+
     {{!-- ITEMS --}}
     <section class="yze-block yze-items">
       <h3>Items</h3>

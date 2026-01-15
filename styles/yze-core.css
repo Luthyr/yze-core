@@ -114,3 +114,22 @@
 .yze-item-modifiers .yze-input {
   width: 100%;
 }
+
+.yze-conditions .yze-condition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yze-conditions .yze-condition-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.yze-conditions .yze-condition-stacks {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}

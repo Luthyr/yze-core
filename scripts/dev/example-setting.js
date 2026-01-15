@@ -22,7 +22,29 @@ export function registerExampleSetting() {
     ],
     resources: {
       stress: { name: "Stress", path: "system.stress.value", maxPath: "system.stress.max" }
-    }
+    },
+    conditions: [
+      {
+        id: "injured",
+        name: "Injured",
+        description: "-1 to Strength/Agility rolls.",
+        stacks: false,
+        modifiers: [
+          { scope: "attribute", attribute: "str", value: -1 },
+          { scope: "attribute", attribute: "agi", value: -1 }
+        ]
+      },
+      {
+        id: "exhausted",
+        name: "Exhausted",
+        description: "-1 to all rolls per stack.",
+        stacks: true,
+        maxStacks: 3,
+        modifiersPerStack: [
+          { scope: "all", value: -1 }
+        ]
+      }
+    ]
   };
 
   game.yzecore.registerSetting(settingConfig);

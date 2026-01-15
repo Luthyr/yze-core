@@ -66,6 +66,14 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     root.querySelectorAll("[data-action='editItem']").forEach(el => {
       el.addEventListener("click", event => this._onEditItem(event));
     });
+
+    root.querySelectorAll("[data-action='toggleCondition']").forEach(el => {
+      el.addEventListener("change", event => this._onToggleCondition(event));
+    });
+
+    root.querySelectorAll("[data-action='adjustConditionStacks']").forEach(el => {
+      el.addEventListener("click", event => this._onAdjustConditionStacks(event));
+    });
   }
 
   _onRollAttr(event) {
@@ -156,6 +164,20 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     item.sheet?.render(true);
   }
 
+  async _onToggleCondition(event) {
+    const id = event.currentTarget?.dataset?.id;
+    if (!id) return;
+    const enabled = !!event.currentTarget.checked;
+    await game.yzecore.setCondition(this.document, id, enabled);
+  }
+
+  async _onAdjustConditionStacks(event) {
+    const id = event.currentTarget?.dataset?.id;
+    const delta = Number(event.currentTarget?.dataset?.delta ?? 0) || 0;
+    if (!id || !delta) return;
+    await game.yzecore.adjustConditionStacks(this.document, id, delta);
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
@@ -195,6 +217,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
       type: item.type,
       equipped: !!item.system?.equipped
     }));
+    context.conditions = game.yzecore.getConditions?.(this.document) ?? [];
 
     // form footer buttons
     context.buttons = [

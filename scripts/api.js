@@ -43,6 +43,40 @@ export function initYZECoreAPI() {
         value: Number(mod.value ?? 0) || 0
       }));
 
+    const setting = game.yzecore.getActiveSetting?.() ?? null;
+    const conditionDefs = Array.isArray(setting?.conditions) ? setting.conditions : [];
+    const conditionFlags = actor.flags?.["yze-core"]?.conditions ?? {};
+    const conditionModifiers = conditionDefs.flatMap(def => {
+      if (!def?.id) return [];
+      const state = conditionFlags?.[def.id] ?? {};
+      const enabled = !!state.enabled;
+      if (!enabled) return [];
+      const stacks = Number(state.stacks ?? 1) || 1;
+      const isStacking = !!def.stacks;
+      const maxStacks = Number(def.maxStacks ?? 3) || 3;
+      const clampedStacks = Math.max(1, Math.min(maxStacks, stacks));
+      const mods = isStacking
+        ? (Array.isArray(def.modifiersPerStack) ? def.modifiersPerStack : [])
+        : (Array.isArray(def.modifiers) ? def.modifiers : []);
+      const multiplier = isStacking ? clampedStacks : 1;
+      return mods.map(mod => ({
+        source: def.name ?? def.id,
+        value: (Number(mod?.value ?? 0) || 0) * multiplier,
+        scope: mod?.scope ?? "all",
+        attribute: mod?.attribute ?? "",
+        skill: mod?.skill ?? ""
+      }));
+    }).filter(mod => {
+      if (mod.scope === "all") return true;
+      if (mod.scope === "attribute") {
+        return !!attributeId && !skillId && mod.attribute === attributeId;
+      }
+      if (mod.scope === "skill") {
+        return !!skillId && mod.skill === skillId;
+      }
+      return false;
+    });
+
     const itemModifiers = (actor.items?.contents ?? [])
       .filter(item => item?.system?.equipped)
       .flatMap(item => {
@@ -68,6 +102,7 @@ export function initYZECoreAPI() {
 
     const modifiers = [
       ...actorModifiers,
+      ...conditionModifiers,
       ...itemModifiers,
       ...(Array.isArray(config.modifiers) ? config.modifiers : [])
     ];
@@ -209,6 +244,63 @@ export function initYZECoreAPI() {
   };
 
   game.yzecore.getActiveSetting = () => game.yzecore.config ?? null;
+  game.yzecore.getConditions = actor => {
+    if (!actor) return [];
+    const setting = game.yzecore.getActiveSetting?.() ?? null;
+    const defs = Array.isArray(setting?.conditions) ? setting.conditions : [];
+    const flags = actor.flags?.["yze-core"]?.conditions ?? {};
+    return defs.map(def => {
+      const state = flags?.[def.id] ?? {};
+      const stacks = Number(state.stacks ?? 1) || 1;
+      const maxStacks = Number(def.maxStacks ?? 3) || 3;
+      return {
+        ...def,
+        enabled: !!state.enabled,
+        stacks: Math.max(1, Math.min(maxStacks, stacks)),
+        maxStacks
+      };
+    });
+  };
+
+  game.yzecore.setCondition = async (actor, id, enabled, stacks) => {
+    if (!actor || !id) return null;
+    const setting = game.yzecore.getActiveSetting?.() ?? null;
+    const def = Array.isArray(setting?.conditions)
+      ? setting.conditions.find(cond => cond.id === id)
+      : null;
+    const maxStacks = Number(def?.maxStacks ?? 3) || 3;
+    const nextStacks = Number.isFinite(stacks)
+      ? Math.max(1, Math.min(maxStacks, Number(stacks)))
+      : 1;
+    const conditions = foundry.utils.duplicate(actor.flags?.["yze-core"]?.conditions ?? {});
+    conditions[id] = {
+      enabled: !!enabled,
+      stacks: nextStacks
+    };
+    return actor.update({ "flags.yze-core.conditions": conditions });
+  };
+
+  game.yzecore.toggleCondition = async (actor, id) => {
+    if (!actor || !id) return null;
+    const current = actor.flags?.["yze-core"]?.conditions?.[id];
+    const enabled = !current?.enabled;
+    const stacks = Number(current?.stacks ?? 1) || 1;
+    return game.yzecore.setCondition(actor, id, enabled, stacks);
+  };
+
+  game.yzecore.adjustConditionStacks = async (actor, id, delta) => {
+    if (!actor || !id) return null;
+    const setting = game.yzecore.getActiveSetting?.() ?? null;
+    const def = Array.isArray(setting?.conditions)
+      ? setting.conditions.find(cond => cond.id === id)
+      : null;
+    const maxStacks = Number(def?.maxStacks ?? 3) || 3;
+    const current = actor.flags?.["yze-core"]?.conditions?.[id];
+    const enabled = !!current?.enabled;
+    const stacks = Number(current?.stacks ?? 1) || 1;
+    const next = Math.max(1, Math.min(maxStacks, stacks + Number(delta ?? 0)));
+    return game.yzecore.setCondition(actor, id, enabled, next);
+  };
   game.yzecore.pushLastRoll = async () => {
     const msg = game.messages.contents
       .slice()
