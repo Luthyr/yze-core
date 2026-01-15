@@ -35,15 +35,13 @@ export class YZESettingSwitcherV2 extends HandlebarsApplicationMixin(Application
   async _onActivate(event) {
     const id = event.currentTarget?.dataset?.id;
     if (!id) return;
-    game.yzecore.activateSetting(id);
+    await game.yzecore.activateSetting(id);
     this.render({ force: true });
   }
 
   async _onDeactivate(event) {
     const id = event.currentTarget?.dataset?.id;
-    game.yzecore.activeSettingId = null;
-    game.yzecore.config = null;
-    Hooks.callAll("yzeCoreSettingDeactivated", { id });
+    await game.yzecore.deactivateSetting(id);
     this.render({ force: true });
   }
 
@@ -57,6 +55,11 @@ export class YZESettingSwitcherV2 extends HandlebarsApplicationMixin(Application
       isActive: active?.id === s.id
     }));
 
+    const persistedId = game.settings.get("yze-core", "activeSettingId") ?? "";
+    const persistedSetting = game.yzecore.settings?.[persistedId];
+    context.persisted = persistedId
+      ? { id: persistedId, name: persistedSetting?.name ?? persistedId }
+      : null;
     context.active = active
       ? { id: active.id, name: active.name ?? active.id }
       : null;

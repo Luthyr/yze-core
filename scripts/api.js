@@ -27,7 +27,7 @@ export function initYZECoreAPI() {
     return config;
   };
 
-  game.yzecore.activateSetting = id => {
+  game.yzecore.activateSetting = async id => {
     const setting = game.yzecore.settings?.[id];
     if (!setting) {
       ui.notifications.warn(`YZE Core | Setting not found: ${id}`);
@@ -35,9 +35,19 @@ export function initYZECoreAPI() {
     }
     game.yzecore.activeSettingId = id;
     game.yzecore.config = setting;
+    await game.settings.set("yze-core", "activeSettingId", id);
     Hooks.callAll("yzeCoreSettingActivated", { id, config: setting });
     return setting;
   };
+
+  game.yzecore.deactivateSetting = async id => {
+    const deactivatedId = id ?? game.yzecore.activeSettingId ?? null;
+    game.yzecore.activeSettingId = null;
+    game.yzecore.config = null;
+    await game.settings.set("yze-core", "activeSettingId", "");
+    Hooks.callAll("yzeCoreSettingDeactivated", { id: deactivatedId });
+  };
+
   game.yzecore.getActiveSetting = () => game.yzecore.config ?? null;
   game.yzecore.pushLastRoll = async () => {
     const msg = game.messages.contents
@@ -47,6 +57,15 @@ export function initYZECoreAPI() {
     if (!msg) return ui.notifications.warn("No YZE roll message found.");
     return game.yzecore.pushRoll(msg);
   };
+
+  game.settings.register("yze-core", "activeSettingId", {
+    name: "Active Setting Id",
+    hint: "Persisted active setting id.",
+    scope: "world",
+    config: false,
+    type: String,
+    default: ""
+  });
 
   game.settings.register("yze-core", "migratedLegacyFlags", {
     name: "Migrated Legacy Flags",
@@ -69,10 +88,22 @@ export function initYZECoreAPI() {
   // Always register the dev example setting for the switcher.
   registerExampleSetting();
 
-  // Auto-activate the example setting only once if nothing is active.
-  const alreadyActivated = game.settings.get("yze-core", "autoActivatedExampleSetting");
-  if (!alreadyActivated && !game.yzecore.activeSettingId) {
-    game.yzecore.activateSetting("example");
-    game.settings.set("yze-core", "autoActivatedExampleSetting", true);
-  }
+  Hooks.once("ready", async () => {
+    const persistedId = game.settings.get("yze-core", "activeSettingId") ?? "";
+    if (persistedId) {
+      if (game.yzecore.settings?.[persistedId]) {
+        await game.yzecore.activateSetting(persistedId);
+      } else {
+        ui.notifications.warn(`YZE Core | Persisted setting not found: ${persistedId}`);
+        await game.settings.set("yze-core", "activeSettingId", "");
+      }
+      return;
+    }
+
+    const alreadyActivated = game.settings.get("yze-core", "autoActivatedExampleSetting");
+    if (!alreadyActivated) {
+      await game.yzecore.activateSetting("example");
+      await game.settings.set("yze-core", "autoActivatedExampleSetting", true);
+    }
+  });
 }

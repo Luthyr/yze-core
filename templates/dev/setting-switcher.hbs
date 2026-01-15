@@ -7,6 +7,9 @@
     <p class="hint">
       Active: {{#if active}}{{active.name}} ({{active.id}}){{else}}None{{/if}}
     </p>
+    <p class="hint">
+      Persisted: {{#if persisted}}{{persisted.name}} ({{persisted.id}}){{else}}None{{/if}}
+    </p>
   </header>
 
   {{#if settings.length}}
