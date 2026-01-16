@@ -485,6 +485,11 @@
   appearance: none;
 }
 
+.yze-npc-header .npc-name input {
+  border: none;
+  background: transparent;
+}
+
 .yze-npc-sheet input[type="text"],
 .yze-npc-sheet input[type="number"],
 .yze-npc-sheet textarea {
