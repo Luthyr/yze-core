@@ -35,8 +35,29 @@
   border: none;
   background: transparent;
   line-height: 1.2;
-  padding: 2px 0;
+  padding: 4px 0;
   color: #1f170f;
+  text-transform: none;
+  height: auto;
+}
+
+.yze-item-title {
+  line-height: 1.2;
+  padding: 2px 0;
+}
+
+.yze-item-title input:focus {
+  outline: none;
+}
+
+.yze-npc-header .npc-name input,
+.yze-actor-sheet .actor-name input,
+.yze-item-sheet .yze-item-title input {
+  font-family: "IM Fell English", "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  font-size: 1.15em;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 4px 0;
 }
 
 
