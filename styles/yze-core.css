@@ -35,7 +35,7 @@
   border: none;
   background: transparent;
   line-height: 1.2;
-  padding: 4px 0;
+  padding: 0;
   color: #1f170f;
   text-transform: none;
   height: auto;
@@ -44,13 +44,17 @@
 .yze-item-title,
 .yze-actor-sheet .actor-name,
 .yze-npc-sheet .npc-name {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 0;
+  padding: 6px 8px;
+  border: 1px solid #8c7b65;
+  border-radius: 6px;
+  background: #fffdf8;
 }
 
 .yze-item-title {
   line-height: 1.2;
-  padding: 2px 0;
+  padding: 6px 8px;
 }
 
 .yze-item-title input:focus {
@@ -61,10 +65,10 @@
 .yze-actor-sheet .actor-name input,
 .yze-item-sheet .yze-item-title input {
   font-family: "IM Fell English", "Cormorant Garamond", "Garamond", "Times New Roman", serif;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 700;
   line-height: 1.3;
-  padding: 4px 0;
+  padding: 0;
 }
 
 
@@ -470,7 +474,9 @@
   appearance: none;
 }
 
-.yze-npc-header .npc-name input {
+.yze-npc-header .npc-name input,
+.yze-actor-sheet .actor-name input,
+.yze-item-sheet .yze-item-title input {
   border: none;
   background: transparent;
   box-shadow: none;
