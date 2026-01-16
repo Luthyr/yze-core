@@ -12,22 +12,34 @@
   <div class="yze-roll-separator"></div>
   <div>Total Dice: {{totalDice}}</div>
   <div>Attribute Dice:</div>
-  <ul>
+  <ul class="yze-dice">
     {{#each rollState.results.attributeDice}}
-      <li>{{this}}</li>
+      <li>
+        <i class="yz-die fas fa-dice-{{yzeDieFace this}} {{yzeDiePushedClass @root.rollState @index}}"
+           data-result="{{this}}"
+           title="{{this}}"></i>
+      </li>
     {{/each}}
   </ul>
   <div>Skill Dice:</div>
-  <ul>
+  <ul class="yze-dice">
     {{#each rollState.results.skillDice}}
-      <li>{{this}}</li>
+      <li>
+        <i class="yz-die fas fa-dice-{{yzeDieFace this}} {{yzeDiePushedClass @root.rollState @index @root.attrValue}}"
+           data-result="{{this}}"
+           title="{{this}}"></i>
+      </li>
     {{/each}}
   </ul>
   {{#if rollState.results.modDice.length}}
     <div>Mod Dice:</div>
-    <ul>
+    <ul class="yze-dice">
       {{#each rollState.results.modDice}}
-        <li>{{this}}</li>
+        <li>
+          <i class="yz-die fas fa-dice-{{yzeDieFace this}} {{yzeDiePushedClass @root.rollState @index (yzeAdd @root.attrValue @root.skillValue)}}"
+             data-result="{{this}}"
+             title="{{this}}"></i>
+        </li>
       {{/each}}
     </ul>
   {{/if}}

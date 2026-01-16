@@ -7,8 +7,32 @@ Hooks.once("init", () => {
 
   registerSheets();
 
+  Handlebars.registerHelper("yzeDieFace", value => {
+    const faces = {
+      1: "one",
+      2: "two",
+      3: "three",
+      4: "four",
+      5: "five",
+      6: "six"
+    };
+    return faces[Number(value)] ?? "one";
+  });
+
+  Handlebars.registerHelper("yzeDiePushedClass", (rollState, index, offset = 0) => {
+    const rerolled = rollState?.push?.rerolledIndices;
+    const diceIndex = Number(index) + Number(offset);
+    if (!Array.isArray(rerolled) || Number.isNaN(diceIndex)) return "";
+    return rerolled.includes(diceIndex) ? "yz-die--pushed" : "";
+  });
+
+  Handlebars.registerHelper("yzeAdd", (...args) => {
+    const values = args.slice(0, -1).map(Number);
+    return values.reduce((sum, value) => (Number.isFinite(value) ? sum + value : sum), 0);
+  });
+
   game.settings.registerMenu("yze-core", "settingSwitcher", {
-    name: "YZE Core — Setting Switcher",
+    name: "YZE Core - Setting Switcher",
     label: "Open Setting Switcher",
     hint: "Developer tool to activate or deactivate YZE Core settings.",
     icon: "fa-solid fa-toggle-on",

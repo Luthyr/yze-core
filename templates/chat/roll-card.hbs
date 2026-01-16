@@ -11,9 +11,13 @@
   {{/if}}
   <div class="yze-roll-separator"></div>
   <div>Dice Pool: {{diceCount}}</div>
-  <ul>
+  <ul class="yze-dice">
     {{#each dice}}
-      <li>{{this}}</li>
+      <li>
+        <i class="yz-die fas fa-dice-{{yzeDieFace this}} {{yzeDiePushedClass ../rollState @index}}"
+           data-result="{{this}}"
+           title="{{this}}"></i>
+      </li>
     {{/each}}
   </ul>
   <div>Successes: {{successes}}</div>

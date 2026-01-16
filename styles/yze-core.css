@@ -389,6 +389,45 @@
   margin: 6px 0;
 }
 
+.yze-roll-card .yze-dice {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 0;
+  margin: 4px 0 8px;
+}
+
+.yze-roll-card .yze-dice li {
+  margin: 0;
+  padding: 0;
+}
+
+.yze-roll-card .yz-die {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  line-height: 1;
+  color: currentColor;
+  text-shadow: 0 0 0 transparent;
+}
+
+.yze-roll-card .yz-die--pushed {
+  opacity: 0.75;
+  filter: saturate(0.8);
+}
+
+.yze-roll-card .yz-die[data-result="6"] {
+  color: #c48a1f;
+  text-shadow: 0 0 4px rgba(196, 138, 31, 0.7), 0 0 8px rgba(196, 138, 31, 0.35);
+}
+
+.yze-roll-card .yz-die[data-result="1"] {
+  color: #8a2f2f;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+}
+
 .yze-items .yze-item-list,
 .yze-talents .yze-item-list {
   display: flex;
