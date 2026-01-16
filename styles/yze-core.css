@@ -41,9 +41,7 @@
   height: auto;
 }
 
-.yze-item-title,
-.yze-actor-sheet .actor-name,
-.yze-npc-sheet .npc-name {
+.yze-item-title {
   font-size: 1.2rem;
   margin: 0;
   padding: 6px 8px;
@@ -61,9 +59,9 @@
   outline: none;
 }
 
-.yze-npc-header .npc-name input,
 .yze-actor-sheet .actor-name input,
-.yze-item-sheet .yze-item-title input {
+.yze-item-sheet .yze-item-title input,
+.yze-npc-sheet .yze-item-title input {
   font-family: "IM Fell English", "Cormorant Garamond", "Garamond", "Times New Roman", serif;
   font-size: 1.3rem;
   font-weight: 700;
@@ -474,9 +472,9 @@
   appearance: none;
 }
 
-.yze-npc-header .npc-name input,
 .yze-actor-sheet .actor-name input,
-.yze-item-sheet .yze-item-title input {
+.yze-item-sheet .yze-item-title input,
+.yze-npc-sheet .yze-item-title input {
   border: none;
   background: transparent;
   box-shadow: none;
@@ -491,6 +489,12 @@
   background: #fffdf8;
   color: #1a140e;
   border: 1px solid #8c7b65;
+}
+
+.yze-npc-sheet .yze-item-title input {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .yze-npc-sheet textarea {
