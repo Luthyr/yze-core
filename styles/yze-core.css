@@ -44,7 +44,7 @@
 .yze-item-title,
 .yze-actor-sheet .actor-name,
 .yze-npc-sheet .npc-name {
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin: 0;
 }
 
@@ -61,7 +61,7 @@
 .yze-actor-sheet .actor-name input,
 .yze-item-sheet .yze-item-title input {
   font-family: "IM Fell English", "Cormorant Garamond", "Garamond", "Times New Roman", serif;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.3;
   padding: 4px 0;
@@ -462,6 +462,15 @@
 }
 
 .yze-npc-header .yze-item-title input {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.yze-npc-header .npc-name input {
   border: none;
   background: transparent;
   box-shadow: none;
