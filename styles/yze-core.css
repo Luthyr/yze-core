@@ -30,7 +30,7 @@
 }
 
 .yze-item-title input {
-  font-size: 1.05em;
+  font-size: 1em;
   font-weight: 700;
   border: none;
   background: transparent;
@@ -452,6 +452,12 @@
   border: none;
   padding: 4px 0 0;
   color: #4a3a28;
+}
+
+.yze-npc-header .yze-item-title input {
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 .yze-npc-sheet input[type="text"],
