@@ -1,9 +1,15 @@
 import { initYZECoreAPI } from "./api.js";
+import { YZECoreActor } from "./documents/actor.js";
+import { YZECoreItem } from "./documents/item.js";
 import { registerSheets } from "./sheets/register.js";
 import { YZESettingSwitcherV2 } from "./dev/setting-switcher.js";
 
 Hooks.once("init", () => {
   initYZECoreAPI();
+
+  CONFIG.Actor.documentClass = YZECoreActor;
+  CONFIG.Item.documentClass = YZECoreItem;
+  CONFIG.ActiveEffect.legacyTransferral = false;
 
   registerSheets();
 
@@ -32,9 +38,9 @@ Hooks.once("init", () => {
   });
 
   game.settings.registerMenu("yze-core", "settingSwitcher", {
-    name: "YZE Core - Setting Switcher",
-    label: "Open Setting Switcher",
-    hint: "Developer tool to activate or deactivate YZE Core settings.",
+    name: "YZE.Setting.Menu.Name",
+    label: "YZE.Setting.Menu.Label",
+    hint: "YZE.Setting.Menu.Hint",
     icon: "fa-solid fa-toggle-on",
     type: YZESettingSwitcherV2,
     restricted: true

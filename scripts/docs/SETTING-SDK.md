@@ -167,21 +167,29 @@ onPush({ actor }) {
 
 prepareActorData(actor, updateData)
 
-Called during actor updates.
+Called during actor initialization before YZE Core writes missing setting defaults.
+
+Use for:
+
+auto-initializing missing fields
+
+prepareActorData(actor, updateData) {
+  if (!foundry.utils.hasProperty(actor, "system.stress.value")) {
+    updateData["system.stress.value"] = 0;
+  }
+}
+
+prepareDerivedData(actor)
+
+Called from the YZE Core Actor document's prepareDerivedData lifecycle.
 
 Use for:
 
 derived stats
 
-clamping values
+temporary labels or computed values
 
-auto-initializing missing fields
-
-prepareActorData(actor) {
-  if (!actor.system.stress) {
-    actor.system.stress = { value: 0, max: 10 };
-  }
-}
+clamping display-only values
 
 5. Validation Rules (Important)
 

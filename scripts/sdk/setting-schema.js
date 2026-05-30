@@ -10,6 +10,7 @@ export const YZESettingSchema = {
   hooks: {
     onRoll: "function?",
     onPush: "function?",
-    prepareActorData: "function?"
+    prepareActorData: "function?",
+    prepareDerivedData: "function?"
   }
 };

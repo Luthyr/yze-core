@@ -1,6 +1,6 @@
 <section class="yze-npc-sheet yze-sheet">
   <header class="yze-header yze-item-header yze-npc-header">
-    <div class="yze-item-type">NPC</div>
+    <div class="yze-item-type">{{localize "YZE.Actor.Type.NPC"}}</div>
     <h2 class="yze-item-title">
       <input type="text"
              name="name"
@@ -8,12 +8,12 @@
              {{#unless @root.editable}}disabled{{/unless}} />
     </h2>
     <div class="npc-subtitle">
-      <textarea name="system.description" rows="2" placeholder="Short description">{{system.description}}</textarea>
+      <textarea name="system.description" rows="2" placeholder="{{localize 'YZE.NPC.ShortDescription'}}">{{system.description}}</textarea>
     </div>
   </header>
 
   <section class="yze-block yze-npc-pools">
-    <h3>Dice Pools</h3>
+    <h3>{{localize "YZE.NPC.DicePools"}}</h3>
     <div class="yze-npc-pool-list">
       {{#each pools as |pool|}}
         <div class="yze-row yze-npc-pool-card" data-pool-id="{{pool.id}}">
@@ -39,7 +39,7 @@
                   class="yze-roll yze-npc-roll"
                   data-action="rollPool"
                   data-id="{{pool.id}}">
-            🎲 Roll
+            {{localize "YZE.Common.Roll"}}
           </button>
 
           <label class="yze-npc-push">
@@ -49,7 +49,7 @@
                    data-id="{{pool.id}}"
                    {{#if pool.canPush}}checked{{/if}}
                    {{#unless @root.editable}}disabled{{/unless}} />
-            Push
+            {{localize "YZE.Common.Push"}}
           </label>
 
           {{#if pool.canPush}}
@@ -57,7 +57,7 @@
                     class="yze-roll yze-npc-push-button"
                     data-action="pushPool"
                     data-id="{{pool.id}}">
-              Push
+              {{localize "YZE.Common.Push"}}
             </button>
           {{/if}}
 
@@ -66,7 +66,7 @@
                   data-action="removePool"
                   data-id="{{pool.id}}"
                   {{#unless @root.editable}}disabled{{/unless}}>
-            Remove
+            {{localize "YZE.Common.Remove"}}
           </button>
         </div>
       {{/each}}
@@ -76,12 +76,12 @@
             class="yze-npc-add"
             data-action="addPool"
             {{#unless @root.editable}}disabled{{/unless}}>
-      + Add Pool
+      + {{localize "YZE.NPC.AddPool"}}
     </button>
   </section>
 
   <section class="yze-block yze-npc-notes">
-    <h3>Notes</h3>
-    <textarea name="system.notes" rows="4" placeholder="Notes">{{system.notes}}</textarea>
+    <h3>{{localize "YZE.Item.Notes"}}</h3>
+    <textarea name="system.notes" rows="4" placeholder="{{localize 'YZE.NPC.NotesPlaceholder'}}">{{system.notes}}</textarea>
   </section>
 </section>

@@ -338,6 +338,21 @@ export function initYZECoreAPI() {
       }
     }
 
+    const prepareActorData = setting.hooks?.prepareActorData;
+    if (typeof prepareActorData === "function") {
+      try {
+        prepareActorData(actor, updateData);
+      } catch (error) {
+        console.error("YZE Core | prepareActorData hook failed", {
+          actor,
+          setting,
+          updateData,
+          error
+        });
+        throw error;
+      }
+    }
+
     if (!Object.keys(updateData).length) return null;
     return actor.update(updateData);
   };

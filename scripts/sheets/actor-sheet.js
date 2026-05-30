@@ -8,7 +8,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
       {
         classes: ["yze-core", "sheet", "actor"],
         position: { width: 860, height: 820 },
-        window: { resizable: true, title: "YZE Core Actor" },
+        window: { resizable: true, title: "YZE.SheetTitles.Actor" },
 
         // ? explicit permissions
         viewPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED,
@@ -160,7 +160,7 @@ export class YZECoreActorSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2
     const itemTypes = game.system.documentTypes?.Item ?? [];
     const type = forcedType ?? itemTypes[0] ?? "gear";
     await this.document.createEmbeddedDocuments("Item", [
-      { name: "New Item", type }
+      { name: game.i18n.localize(type === "talent" ? "YZE.Talent.NewTalent" : "YZE.Equipment.NewGear"), type }
     ]);
   }
 

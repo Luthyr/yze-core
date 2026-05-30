@@ -9,7 +9,7 @@ export class YZECoreNpcSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) 
       {
         classes: ["yze-core", "sheet", "npc"],
         position: { width: 480, height: 640 },
-        window: { resizable: true, title: "YZE Core NPC" },
+        window: { resizable: true, title: "YZE.SheetTitles.NPC" },
         viewPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED,
         editPermission: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
       },
@@ -58,7 +58,7 @@ export class YZECoreNpcSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) 
       ...pools,
       {
         id: foundry.utils.randomID(),
-        name: "New Pool",
+        name: game.i18n.localize("YZE.NPC.NewPool"),
         dice: 1,
         canPush: false
       }

@@ -11,12 +11,12 @@
       <input type="checkbox"
              data-action="toggleItemEquipped"
              {{#if system.equipped}}checked{{/if}} />
-      Equipped
+      {{localize "YZE.Item.Equipped"}}
     </label>
   </section>
 
   <section class="sheet-section yze-modifiers yze-item-modifiers">
-    <h2>Modifiers</h2>
+    <h2>{{localize "YZE.Modifier.Title"}}</h2>
     <div class="yze-modifier-list">
       {{#each modifiers as |mod|}}
         <div class="yze-row yze-modifier-row" data-modifier-id="{{mod.id}}">
@@ -31,9 +31,9 @@
           <select data-action="editItemModifier"
                   data-field="scope"
                   data-id="{{mod.id}}">
-            <option value="all" {{#if (eq mod.scope "all")}}selected{{/if}}>All</option>
-            <option value="attribute" {{#if (eq mod.scope "attribute")}}selected{{/if}}>Attribute</option>
-            <option value="skill" {{#if (eq mod.scope "skill")}}selected{{/if}}>Skill</option>
+            <option value="all" {{#if (eq mod.scope "all")}}selected{{/if}}>{{localize "YZE.Item.ModifierScope.All"}}</option>
+            <option value="attribute" {{#if (eq mod.scope "attribute")}}selected{{/if}}>{{localize "YZE.Item.ModifierScope.Attribute"}}</option>
+            <option value="skill" {{#if (eq mod.scope "skill")}}selected{{/if}}>{{localize "YZE.Item.ModifierScope.Skill"}}</option>
           </select>
 
           {{#if (eq mod.scope "attribute")}}
@@ -41,7 +41,7 @@
               <select data-action="editItemModifier"
                       data-field="attribute"
                       data-id="{{mod.id}}">
-                <option value="">Attribute</option>
+                <option value="">{{localize "YZE.Item.AttributeOption"}}</option>
                 {{#each @root.attributeOptions as |attr|}}
                   <option value="{{attr.id}}" {{#if (eq attr.id ../mod.attribute)}}selected{{/if}}>
                     {{attr.name}}
@@ -51,7 +51,7 @@
             {{else}}
               <input type="text"
                      class="yze-input"
-                     placeholder="Attribute id"
+                     placeholder="{{localize 'YZE.Item.AttributeOption'}} id"
                      data-action="editItemModifier"
                      data-field="attribute"
                      data-id="{{mod.id}}"
@@ -64,7 +64,7 @@
               <select data-action="editItemModifier"
                       data-field="skill"
                       data-id="{{mod.id}}">
-                <option value="">Skill</option>
+                <option value="">{{localize "YZE.Item.SkillOption"}}</option>
                 {{#each @root.skillOptions as |skill|}}
                   <option value="{{skill.id}}" {{#if (eq skill.id ../mod.skill)}}selected{{/if}}>
                     {{skill.name}}
@@ -74,7 +74,7 @@
             {{else}}
               <input type="text"
                      class="yze-input"
-                     placeholder="Skill id"
+                     placeholder="{{localize 'YZE.Item.SkillOption'}} id"
                      data-action="editItemModifier"
                      data-field="skill"
                      data-id="{{mod.id}}"
@@ -84,7 +84,7 @@
 
           <input type="text"
                  class="yze-input"
-                 placeholder="Label (optional)"
+                 placeholder="{{localize 'YZE.Item.LabelPlaceholder'}}"
                  data-action="editItemModifier"
                  data-field="label"
                  data-id="{{mod.id}}"
@@ -93,19 +93,19 @@
           <button type="button"
                   data-action="removeItemModifier"
                   data-id="{{mod.id}}">
-            Remove
+            {{localize "YZE.Common.Remove"}}
           </button>
         </div>
       {{/each}}
     </div>
 
     <button type="button" data-action="addItemModifier">
-      + Add Modifier
+      + {{localize "YZE.Common.AddModifier"}}
     </button>
   </section>
 
   <section class="sheet-section">
-    <h2>Notes</h2>
+    <h2>{{localize "YZE.Item.Notes"}}</h2>
     <textarea name="system.description" rows="8">{{system.description}}</textarea>
   </section>
 </section>

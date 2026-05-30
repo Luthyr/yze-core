@@ -8,18 +8,18 @@ export function registerSheets() {
   Actors.registerSheet("yze-core", YZECoreActorSheetV2, {
     types: ["character"],
     makeDefault: true,
-    label: "YZE Core Actor Sheet"
+    label: "YZE.SheetLabels.Actor"
   });
   Actors.registerSheet("yze-core", YZECoreNpcSheetV2, {
     types: ["npc"],
     makeDefault: true,
-    label: "YZE Core NPC Sheet"
+    label: "YZE.SheetLabels.NPC"
   });
 
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("yze-core", YZECoreItemSheetV2, {
     types: ["gear", "talent"],
     makeDefault: true,
-    label: "YZE Core Item Sheet"
+    label: "YZE.SheetLabels.Item"
   });
 }

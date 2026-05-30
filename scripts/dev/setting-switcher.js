@@ -7,7 +7,7 @@ export class YZESettingSwitcherV2 extends HandlebarsApplicationMixin(Application
       {
         classes: ["yze-core", "app", "setting-switcher"],
         position: { width: 420, height: "auto" },
-        window: { resizable: true, title: "YZE Core — Setting Switcher" }
+        window: { resizable: true, title: "YZE.Setting.Menu.Title" }
       },
       { inplace: false }
     );

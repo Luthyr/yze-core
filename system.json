@@ -14,6 +14,10 @@
       "url": "https://github.com/Luthyr"
     }
   ],
+  "readme": "README.md",
+  "bugs": "https://github.com/Luthyr/yze-core/issues",
+  "changelog": "CHANGELOG.md",
+  "media": [],
   "esmodules": [
     "scripts/init.js"
   ],
@@ -21,8 +25,16 @@
   "styles": [
     "styles/yze-core.css"
   ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
   "packs": [],
-  "languages": [],
+  "packFolders": [],
+  "socket": false,
   "gridDistance": 1,
   "gridUnits": "m",
   "primaryTokenAttribute": "resource",

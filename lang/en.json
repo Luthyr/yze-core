@@ -1,0 +1,109 @@
+{
+  "YZE": {
+    "Actor": {
+      "Type": {
+        "Character": "Character",
+        "NPC": "NPC"
+      }
+    },
+    "Common": {
+      "AddModifier": "Add Modifier",
+      "Edit": "Edit",
+      "Remove": "Remove",
+      "Roll": "Roll",
+      "Push": "Push"
+    },
+    "Condition": {
+      "None": "No conditions defined in the active setting.",
+      "Title": "Conditions"
+    },
+    "Equipment": {
+      "None": "No equipment yet.",
+      "NewGear": "New Gear",
+      "Title": "Equipment"
+    },
+    "Item": {
+      "AttributeOption": "Attribute",
+      "Equipped": "Equipped",
+      "LabelPlaceholder": "Label (optional)",
+      "ModifierScope": {
+        "All": "All",
+        "Attribute": "Attribute",
+        "Skill": "Skill"
+      },
+      "Notes": "Notes",
+      "SkillOption": "Skill"
+    },
+    "LastRoll": {
+      "Banes": "Banes",
+      "None": "No rolls yet.",
+      "Pushed": "Pushed",
+      "Successes": "Successes",
+      "Title": "Last Roll",
+      "Yes": "Yes",
+      "No": "No"
+    },
+    "Modifier": {
+      "SourcePlaceholder": "Source",
+      "Title": "Modifiers"
+    },
+    "NPC": {
+      "AddPool": "Add Pool",
+      "DicePools": "Dice Pools",
+      "PoolRollTitle": "{poolName} Roll",
+      "NewPool": "New Pool",
+      "NotesPlaceholder": "Notes",
+      "ShortDescription": "Short description"
+    },
+    "Resource": {
+      "Title": "Resources"
+    },
+    "Setting": {
+      "Active": "Active setting: {name} ({id})",
+      "Menu": {
+        "Hint": "Developer tool to activate or deactivate YZE Core settings.",
+        "Label": "Open Setting Switcher",
+        "Name": "YZE Core - Setting Switcher",
+        "Title": "YZE Core - Setting Switcher"
+      },
+      "Missing": "No active setting. Activate or load a setting to display attributes, skills, and resources.",
+      "MissingExampleHint": "(Dev) If you expected the example setting: enable Enable Dev Example Setting and reload the world.",
+      "SwitcherActive": "Active",
+      "SwitcherDescription": "Settings define attributes, skills, and rules for this game. Only one may be active at a time.",
+      "SwitcherNoneActive": "None",
+      "SwitcherNone": "No settings registered."
+    },
+    "SheetLabels": {
+      "Actor": "YZE Core Actor Sheet",
+      "Item": "YZE Core Item Sheet",
+      "NPC": "YZE Core NPC Sheet"
+    },
+    "SheetTitles": {
+      "Actor": "YZE Core Actor",
+      "Item": "YZE Core Item",
+      "NPC": "YZE Core NPC"
+    },
+    "Stats": {
+      "Attributes": "Attributes",
+      "Skills": "Skills"
+    },
+    "Talent": {
+      "NewTalent": "New Talent",
+      "None": "No talents yet.",
+      "Title": "Talents"
+    },
+    "Roll": {
+      "Push": "Push"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC"
+    },
+    "Item": {
+      "gear": "Gear",
+      "talent": "Talent"
+    }
+  }
+}

@@ -3,6 +3,8 @@ Core game module for the YZE game system.
 
 Notes:
 - Sheet registration is centralized in `scripts/sheets/register.js` and called during the `init` hook.
+- Foundry document classes live in `scripts/documents/` and are registered during the `init` hook.
+- User-facing core sheet strings are localized through `lang/en.json`.
 
 // YZE Core v0.11.0
 // Stable: consistent sheet styling

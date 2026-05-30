@@ -5,7 +5,7 @@ export class YZECoreItemSheetV2 extends HandlebarsApplicationMixin(ItemSheetV2) 
   static DEFAULT_OPTIONS = {
     classes: ["yze-core", "sheet", "item"],
     position: { width: 620, height: 720 },
-    window: { resizable: true, title: "YZE Core Item" }
+    window: { resizable: true, title: "YZE.SheetTitles.Item" }
   };
 
   static PARTS = {

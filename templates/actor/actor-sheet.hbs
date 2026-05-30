@@ -1,7 +1,7 @@
 <section class="yze-actor-sheet yze-sheet">
 
   <header class="yze-header yze-item-header">
-    <div class="yze-item-type">Character</div>
+    <div class="yze-item-type">{{localize "YZE.Actor.Type.Character"}}</div>
     <h2 class="yze-item-title actor-name">
       <input type="text"
              name="name"
@@ -9,7 +9,7 @@
              {{#unless @root.editable}}disabled{{/unless}} />
     </h2>
     {{#if yze.hasActiveSetting}}
-      <p class="hint">Active setting: <strong>{{yze.activeSetting.name}}</strong> ({{yze.activeSetting.id}})</p>
+      <p class="hint">{{localize "YZE.Setting.Active" name=yze.activeSetting.name id=yze.activeSetting.id}}</p>
     {{/if}}
   </header>
 
@@ -19,7 +19,7 @@
       <div class="yze-left-column">
         {{!-- ATTRIBUTES + SKILLS --}}
         <section class="yze-block yze-attributes">
-          <h3>Attributes</h3>
+          <h3>{{localize "YZE.Stats.Attributes"}}</h3>
           <div class="yze-attr-groups">
             {{#each attributesRendered as |attr|}}
               <div class="yze-attr-group">
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="yze-skill-list">
-                  <div class="yze-subsection-title">Skills</div>
+                  <div class="yze-subsection-title">{{localize "YZE.Stats.Skills"}}</div>
                   {{#each @root.skillsRendered as |skill|}}
                     {{#if (eq skill.attribute ../id)}}
                       <div class="yze-row yze-skill-row" data-skill="{{skill.id}}">
@@ -71,7 +71,7 @@
         {{!-- RESOURCES --}}
         {{#if resourcesRendered}}
         <section class="yze-block yze-resources">
-          <h3>Resources</h3>
+          <h3>{{localize "YZE.Resource.Title"}}</h3>
             <div class="yze-resource-list">
               {{#each resourcesRendered as |res|}}
                 <div class="yze-row yze-resource-row" data-resource="{{res.resId}}">
@@ -109,7 +109,7 @@
       <div class="yze-right-column">
         {{!-- CONDITIONS --}}
         <section class="yze-block yze-conditions">
-          <h3>Conditions</h3>
+          <h3>{{localize "YZE.Condition.Title"}}</h3>
           {{#if conditions.length}}
             <div class="yze-condition-list">
               {{#each conditions as |cond|}}
@@ -147,13 +147,13 @@
               {{/each}}
             </div>
           {{else}}
-            <p class="hint">No conditions defined in the active setting.</p>
+            <p class="hint">{{localize "YZE.Condition.None"}}</p>
           {{/if}}
         </section>
 
         {{!-- MODIFIERS --}}
         <section class="yze-block yze-modifiers">
-          <h3>Modifiers</h3>
+          <h3>{{localize "YZE.Modifier.Title"}}</h3>
           <div class="yze-modifier-list">
             {{#each modifiers as |mod|}}
               <div class="yze-row yze-modifier-row" data-modifier-id="{{mod.id}}">
@@ -165,7 +165,7 @@
 
                 <input type="text"
                        class="yze-input"
-                       placeholder="Source"
+                       placeholder="{{localize 'YZE.Modifier.SourcePlaceholder'}}"
                        data-action="editModifier"
                        data-field="source"
                        data-id="{{mod.id}}"
@@ -185,7 +185,7 @@
                         data-action="removeModifier"
                         data-id="{{mod.id}}"
                         {{#unless @root.editable}}disabled{{/unless}}>
-                  Remove
+                  {{localize "YZE.Common.Remove"}}
                 </button>
               </div>
             {{/each}}
@@ -194,13 +194,13 @@
           <button type="button"
                   data-action="addModifier"
                   {{#unless @root.editable}}disabled{{/unless}}>
-            + Add Modifier
+            + {{localize "YZE.Common.AddModifier"}}
           </button>
         </section>
 
         {{!-- ITEMS --}}
         <section class="yze-block yze-items">
-          <h3>Equipment</h3>
+          <h3>{{localize "YZE.Equipment.Title"}}</h3>
           {{#if gearItems.length}}
             <div class="yze-item-list">
               {{#each gearItems as |item|}}
@@ -216,7 +216,7 @@
                   <button type="button"
                           data-action="editItem"
                           data-item-id="{{item.id}}">
-                    Edit
+                    {{localize "YZE.Common.Edit"}}
                   </button>
                 </div>
                 {{#if item.modifiers.length}}
@@ -229,18 +229,18 @@
               {{/each}}
             </div>
           {{else}}
-            <p class="hint">No equipment yet.</p>
+            <p class="hint">{{localize "YZE.Equipment.None"}}</p>
           {{/if}}
 
           <button type="button"
                   data-action="createGear"
                   {{#unless @root.editable}}disabled{{/unless}}>
-            + New Gear
+            + {{localize "YZE.Equipment.NewGear"}}
           </button>
         </section>
 
         <section class="yze-block yze-talents">
-          <h3>Talents</h3>
+          <h3>{{localize "YZE.Talent.Title"}}</h3>
           {{#if talentItems.length}}
             <div class="yze-item-list">
               {{#each talentItems as |item|}}
@@ -256,7 +256,7 @@
                   <button type="button"
                           data-action="editItem"
                           data-item-id="{{item.id}}">
-                    Edit
+                    {{localize "YZE.Common.Edit"}}
                   </button>
                 </div>
                 {{#if item.modifiers.length}}
@@ -269,13 +269,13 @@
               {{/each}}
             </div>
           {{else}}
-            <p class="hint">No talents yet.</p>
+            <p class="hint">{{localize "YZE.Talent.None"}}</p>
           {{/if}}
 
           <button type="button"
                   data-action="createTalent"
                   {{#unless @root.editable}}disabled{{/unless}}>
-            + New Talent
+            + {{localize "YZE.Talent.NewTalent"}}
           </button>
         </section>
       </div>
@@ -283,16 +283,16 @@
 
     {{!-- LAST ROLL --}}
     <section class="yze-block yze-last-roll">
-      <h3>Last Roll</h3>
+      <h3>{{localize "YZE.LastRoll.Title"}}</h3>
       {{#if lastRoll}}
         <div class="yze-row yze-last-roll-row">
           <label class="yze-label">{{lastRoll.label}}</label>
-          <span class="yze-subtle">Successes: {{lastRoll.successes}}</span>
-          <span class="yze-subtle">Banes: {{lastRoll.banes}}</span>
-          <span class="yze-subtle">Pushed: {{#if lastRoll.pushed}}Yes{{else}}No{{/if}}</span>
+          <span class="yze-subtle">{{localize "YZE.LastRoll.Successes"}}: {{lastRoll.successes}}</span>
+          <span class="yze-subtle">{{localize "YZE.LastRoll.Banes"}}: {{lastRoll.banes}}</span>
+          <span class="yze-subtle">{{localize "YZE.LastRoll.Pushed"}}: {{#if lastRoll.pushed}}{{localize "YZE.LastRoll.Yes"}}{{else}}{{localize "YZE.LastRoll.No"}}{{/if}}</span>
         </div>
       {{else}}
-        <p class="hint">No rolls yet.</p>
+        <p class="hint">{{localize "YZE.LastRoll.None"}}</p>
       {{/if}}
     </section>
 
@@ -300,10 +300,10 @@
 
     <section class="yze-block">
       <p class="warning">
-        No active setting. Activate or load a setting to display attributes, skills, and resources.
+        {{localize "YZE.Setting.Missing"}}
       </p>
       <p class="hint">
-        (Dev) If you expected the example setting: enable <em>Enable Dev Example Setting</em> and reload the world.
+        {{localize "YZE.Setting.MissingExampleHint"}}
       </p>
     </section>
 
